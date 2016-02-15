@@ -178,7 +178,7 @@ void LocalParameterization::updateTextureCoord(int textureIndex)
 	for (i = 0; i < mymesh->numberF; i++)
 	{
 		file << find1by2(i, vfp) << " " << mymesh->faceEffect[i] << endl;
-		if (mymesh->faceEffect[i])
+		if (mymesh->faceEffect[i]||true)
 		{
 			for (j = 0; j < 3; j++)
 			{

@@ -2195,7 +2195,7 @@ double Polyhedron::getCurrentE(){
 		for (i = 0; i < numberF; i++)
 		{
 			//不计算没有贴图区域的拉伸
-			if (!faceEffect[i]) continue;
+			//if (!faceEffect[i]) continue;
 			if (boundary[Face[i][0]] != 1 && boundary[Face[i][1]] != 1 && boundary[Face[i][2]] != 1)
 			{
 				pV1 = pV[Face[i][0]];
@@ -2222,7 +2222,7 @@ double Polyhedron::getCurrentE(){
 		for (i = 0; i < numberF; i++)
 		{
 			//不计算没有贴图区域的拉伸
-			if (!faceEffect[i]) continue;
+			//if (!faceEffect[i]) continue;
 			pV1 = pV[Face[i][0]];
 			pV2 = pV[Face[i][1]];
 			pV3 = pV[Face[i][2]];

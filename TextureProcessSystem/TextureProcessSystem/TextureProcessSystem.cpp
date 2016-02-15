@@ -331,7 +331,7 @@ void CTextureProcessSystemApp::Check()
 	f2 << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 	f2.close();
 	//1585测试用例*/
-	pDoc->buildTexCoordByIndex(pDoc->userSelectingTriangleIndex, 50, 50, 0.04, 2);
+	pDoc->buildTexCoordByIndex(pDoc->userSelectingTriangleIndex, 0, 100, 0.01, 2);
 	
 	/*
 	//计算基元在中心面片的相对位置

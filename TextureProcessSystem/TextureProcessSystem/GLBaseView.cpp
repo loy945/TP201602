@@ -762,6 +762,7 @@ BOOL CGLBaseView::PreTranslateMessage(MSG* pMsg)
 		case 45:
 		{
 				   //Insert
+				   m_pDoc->selectfaceLsit.clear();
 				   if (isOpenDepthTest)
 				   {
 					   isOpenDepthTest = false;

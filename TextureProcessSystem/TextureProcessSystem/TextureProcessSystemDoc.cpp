@@ -2209,7 +2209,6 @@ void CTextureProcessSystemDoc::buildTexCoord(int index, vector<int>&v, int &deep
 	centerPT.x = plyLoader.faceArry[index].corex;
 	centerPT.y = plyLoader.faceArry[index].corey;
 	centerPT.z = plyLoader.faceArry[index].corez;
-
 	while (vlist.size() > 0 && count < maxNum)
 	{
 		//找出与中心最近的
@@ -2292,8 +2291,6 @@ void CTextureProcessSystemDoc::buildTexCoord(int index, vector<int>&v, int &deep
 				vlist.push_back(new_indexdex[j]);
 			}
 		}
-	
-		
 	}
 	return;
 }
