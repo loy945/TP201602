@@ -17,5 +17,6 @@ public:
 	float getDistanceBetweenTwoTriangles(int index1, int index2);
 	float getGeodesicDistanceBetweenTwoTriangles(int index1, int index2);
 	float getGeodesicDistanceBetweenTwoTrianglesWithBEPoint(int index1, int index2,Point3D pt1,Point3D pt2);
+	void initDistanceFromCenter(int index);
 };
 

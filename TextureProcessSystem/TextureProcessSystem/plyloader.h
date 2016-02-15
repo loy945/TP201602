@@ -70,7 +70,7 @@ public:
 	float r,g,b;
 	gl_face(){ facenum = -1;vectorPosX=0;vectorPosY=0;value=0;isSetValue=false;
 	textureclick=false;r=1;g=1;b=1;
-	is2DCordFixed = false; isProcessedTexCor = false; renderTime = 0; isShowColorIn3D = false; disFromCenter = 0; isCoveredByElement = false;
+	is2DCordFixed = false; isProcessedTexCor = false; renderTime = 0; isShowColorIn3D = false; disFromCenter = 9999; isCoveredByElement = false;
 	}
 	//3.22 2D坐标平移拼接后固定
 	bool is2DCordFixed;

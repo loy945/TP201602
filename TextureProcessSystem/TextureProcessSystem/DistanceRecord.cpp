@@ -348,3 +348,54 @@ float DistanceRecord::getGeodesicDistanceBetweenTwoTrianglesWithBEPoint(int inde
 	}
 	return -404;
 }
+void DistanceRecord::initDistanceFromCenter(int index)
+{
+	TriangleFace * face1 = NULL;
+	vector<TriangleFace *> checkingList;
+	vector<TriangleFace *> checkedList;
+	vector<TriangleFace *> all;
+	for (int i = 0; i < m_triangleFaceArry.size(); i++)
+	{
+		if (m_triangleFaceArry[i].facenum == index)
+		{
+			face1 = &m_triangleFaceArry[i];
+		}
+		all.push_back(&m_triangleFaceArry[i]);
+	}
+
+	face1->disFromCenter = 0;	
+	checkingList.push_back(face1);
+	while (checkingList.size() > 0)
+	{
+		TriangleFace * face3 = checkingList[0];
+		checkingList.erase(checkingList.begin());
+		checkedList.push_back(face3);
+		for (int w = 0; w < face3->faceNearByNums; w++)
+		{
+			TriangleFace * faceN = NULL;
+			faceN = &m_triangleFaceArry[face3->faceNearByIndex[w]];
+			//在首尾分别重新计算指定点到下一面片中心点距离					
+			if (faceN->disFromCenter >= face3->disFromCenter + faceN->faceNearByDistance[w])
+			{
+				faceN->disFromCenter = face3->disFromCenter + faceN->faceNearByDistance[w];
+			}
+			bool canAddedIn = false;
+			for (int j = 0; j < all.size(); j++)
+			{
+				if (faceN->facenum == all[j]->facenum)
+				{
+					canAddedIn = true;
+					all.erase(all.begin() + j);
+					break;
+				}
+			}
+			if (canAddedIn)
+			{
+				checkingList.push_back(faceN);
+			}
+
+		}
+	}
+	int d = 0;
+	d = 1;
+}

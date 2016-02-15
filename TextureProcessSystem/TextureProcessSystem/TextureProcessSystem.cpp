@@ -265,7 +265,7 @@ void CTextureProcessSystemApp::SelectFace()
 	pDoc->_ftep = _ftep;
 	_ftep->getDR(pDoc->dr);
 	_ftep->init(pDoc);
-	
+ 	pDoc->dr->initDistanceFromCenter(pDoc->userSelectingTriangleIndex);
 	CString s1;
 	s1.Format("%d ",_ftep->m_targetTexture->tes.size());
 	AfxMessageBox(s1);

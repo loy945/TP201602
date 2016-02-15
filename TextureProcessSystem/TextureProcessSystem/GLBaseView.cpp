@@ -473,10 +473,24 @@ void CGLBaseView::drawPLY()
 		{
 			glColor3f(1, 0, 0);
 		}
-		else
+		/*else
 		{
-			glColor3f(0.75, 0.75, 0.75);
-		}
+				float c = m_pDoc->dr->m_triangleFaceArry[i].disFromCenter/2.0;
+				if (c>0.8)
+				{
+					glColor3f(0, 0, 0);
+				}else if (c>0.5)
+				{
+					glColor3f(0, 0, c);
+				}
+				else if (c > 0.2)
+				{
+					glColor3f(0, c, 0);
+				}
+				else{
+					glColor3f(c, 0, 0);
+				}
+		}*/
 		}
 		float v1x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
 		float v1y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
