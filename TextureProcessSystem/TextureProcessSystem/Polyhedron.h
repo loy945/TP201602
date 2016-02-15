@@ -21,7 +21,7 @@ class Polyhedron{
 public:
 	int numberV;
 	int numberF;
-	int boundarytype;
+	int boundarytype;;;
 	/*
 	   0: unit square
 	   1: unit circle
