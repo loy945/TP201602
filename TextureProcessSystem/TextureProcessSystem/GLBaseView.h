@@ -59,6 +59,7 @@ public:
 	void DrawTest();
 	bool isFill;
 	bool isOpenDepthTest;
+	
 public:
 	//Àı∑≈±‰¡ø
 	float scale_X;

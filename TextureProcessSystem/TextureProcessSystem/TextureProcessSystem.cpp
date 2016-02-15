@@ -275,10 +275,10 @@ void CTextureProcessSystemApp::Check()
 {
 	CFrameWnd* pMain=(CFrameWnd*)CWinThread::m_pMainWnd;
 	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
-
+	pDoc->istestV = true;
 	
 
-	pDoc->selectfaceLsit.clear();
+	//pDoc->selectfaceLsit.clear();
 
 	int size=pDoc->plyLoader.faceArry.size();
 	pDoc->count=0;
@@ -295,7 +295,7 @@ void CTextureProcessSystemApp::Check()
 	TimeStart = GetTickCount();
 
 
-	for (int i = 0; i < pDoc->_ftep->m_targetTexture->tes.size(); i++)
+	/*for (int i = 0; i < pDoc->_ftep->m_targetTexture->tes.size(); i++)
 	{
 		if (!pDoc->_ftep->m_targetTexture->tes[i]->isShow) continue;
 		int textureIndex = pDoc->_ftep->m_targetTexture->tes[i]->textureIndex;
@@ -330,10 +330,11 @@ void CTextureProcessSystemApp::Check()
 	f2 << "element nums:" << pDoc->_ftep->m_targetTexture->tes.size() << endl;
 	f2 << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 	f2.close();
-	//1585测试用例
-//	pDoc->buildTexCoordByIndex(1585, 50, 50, 0.04, 2);
+	//1585测试用例*/
+	pDoc->buildTexCoordByIndex(pDoc->userSelectingTriangleIndex, 50, 50, 0.04, 2);
 	
-	/*//计算基元在中心面片的相对位置
+	/*
+	//计算基元在中心面片的相对位置
 	Point3D pt1;//第i个基元的位置
 	pt1.x = pDoc->plyLoader.faceArry[1585].corex;
 	pt1.y = pDoc->plyLoader.faceArry[1585].corey;

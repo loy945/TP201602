@@ -30,6 +30,7 @@ CGLBaseView::CGLBaseView()
 	ofstream f1("texlog.txt");
 	f1.close();
 	isOpenDepthTest = false;
+	
 }
 
 CGLBaseView::~CGLBaseView()
@@ -469,10 +470,10 @@ void CGLBaseView::drawPLY()
 		if (isFill)
 		{
 		
-		if (m_pDoc->dr->m_triangleFaceArry[i].isMark&&false)
-		{
-			glColor3f(1, 0, 0);
-		}
+// 		if (m_pDoc->dr->m_triangleFaceArry[i].isMark&&false)
+// 		{
+// 			glColor3f(1, 0, 0);
+// 		}
 		/*else
 		{
 				float c = m_pDoc->dr->m_triangleFaceArry[i].disFromCenter/2.0;
@@ -491,6 +492,16 @@ void CGLBaseView::drawPLY()
 					glColor3f(c, 0, 0);
 				}
 		}*/
+		}
+		else
+		{
+			if (Triangle->at(i).testV)
+			{
+				glColor3f(1, 0, 0);
+			}else
+			{
+				glColor3f(0.3, 0.3, 0.3);
+			}
 		}
 		float v1x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
 		float v1y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
@@ -967,6 +978,17 @@ void CGLBaseView::DrawScene()
 			drawPLYwithMultiTexture();
 			// 			glDisable(GL_LIGHTING);
 			// 			glDisable(GL_LIGHT0);
+			if (m_pDoc->istestV)
+			{
+				glEnable(GL_POLYGON_OFFSET_LINE);
+				glPolygonOffset(-1.0f, -1.0f);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);;
+				glColor3f(0.3, 0.3, 0.3);
+				isFill = false;
+				drawPLY();
+				glDisable(GL_POLYGON_OFFSET_LINE);
+			}
+
 		}
 		else
 		{
@@ -996,8 +1018,8 @@ void CGLBaseView::DrawScene()
 			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_DEPTH_BUFFER_BIT);
 		}
-		if (m_pDoc->_ftep&&m_pDoc->show_ftep&&!m_pDoc->isdrawbg)
-		{
+		if (m_pDoc->_ftep)
+		{//m_pDoc->show_ftep&&&&!m_pDoc->isdrawbg
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//Ìî³äÄ£Ê½
 			FindTextureElementPosition * ftep = m_pDoc->_ftep;
 			ftep->draw();

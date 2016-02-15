@@ -97,6 +97,7 @@ public:
 	//20150906
 	DistanceRecord * dr;//测地线距离数据
 	bool isdrawbg;//背景填充颜色
+	bool istestV;
 // 重写
 public:
 	virtual BOOL OnNewDocument();

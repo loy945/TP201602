@@ -57,6 +57,7 @@ CTextureProcessSystemDoc::CTextureProcessSystemDoc()
 	offset[1] = 0;
 	offsetPT = new Point3D(0, 0, 0);
 	isdrawbg = false;
+	istestV = false;
 }
 
 CTextureProcessSystemDoc::~CTextureProcessSystemDoc()
@@ -131,8 +132,8 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 					}
 				}
 			//生成临接信息
-				dr = new DistanceRecord();
-				dr->init(&plyLoader);
+// 				dr = new DistanceRecord();
+// 				dr->init(&plyLoader);
 
 			return TRUE;
 		}
@@ -2103,9 +2104,9 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 		maxNum++;
 	//}
 	lp.updateTextureCoord(textureIndex);
-	/*
+	
 
-
+/*
 	//确定缩放比例
 	float minCoord[3] = { 999, 999, 999 }; 
 	float maxCoord[3] = { -999, -999, -999 };
@@ -2156,6 +2157,8 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 	//直接添加纹理坐标
 	for (int i = 0; i < v.size(); i++)
 	{
+		//testV
+		plyLoader.faceArry[v[i]].testV = true;
 		/*for (int j = 0; j < 3; j++)
 		{
 			plyLoader.faceArry[v[i]].texCoord.cor[j][0] = (plyLoader.pointArry[plyLoader.faceArry[v[i]].ptnum[j]].u - centerPt.x)*kn + centerPt.x;
