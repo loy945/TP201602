@@ -317,7 +317,7 @@ void CTextureProcessSystemApp::Check()
 		pDoc->offsetPT->x = temp->x;
 		pDoc->offsetPT->y = temp->y;
 		pDoc->offsetPT->z = temp->z;
-		pDoc->buildTexCoordByIndex(faceNum, 50, 50, 0.04, textureIndex);
+		pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.008, textureIndex);
 	}
 	f.close();
 	TimeEnd = GetTickCount();
@@ -358,12 +358,11 @@ void CTextureProcessSystemApp::Check()
 		tri[i]=&pt[i];
 	}	
 	tct.init(tri);
-	Point3D * temp = tct.convertCoordXYZ2ABC(&pt[7]);
+	Point3D * temp = tct.convertCoordXYZ2ABC(&pt[3]);
 	pDoc->offsetPT->x = temp->x;
 	pDoc->offsetPT->y = temp->y;
 	pDoc->offsetPT->z = temp->z;
-	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.01, 2);
-	*/
+	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.008, rand()%48+2);
 	/*
 	//计算基元在中心面片的相对位置
 	Point3D pt1;//第i个基元的位置

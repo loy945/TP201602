@@ -258,49 +258,50 @@ void CGLBaseView::drawPLYwithMultiTexture()
 				}
 				continue;
 			}
-			int textureIndex = 3;
+			
+			int textureIndex = 2;
 			switch (Triangle->at(i).texCoords.size())
 			{
 			case 6:
 			{		 // 激活纹理3,并绑定纹理 
 					  glActiveTextureARB(GL_TEXTURE6_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  // textureIndex=Triangle->at(i).texCoords[5]->textureIndex;
+					  textureIndex=Triangle->at(i).texCoords[5]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 5:
 			{		 // 激活纹理3,并绑定纹理 
 					  glActiveTextureARB(GL_TEXTURE5_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  // textureIndex = Triangle->at(i).texCoords[4]->textureIndex;
+					  textureIndex = Triangle->at(i).texCoords[4]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 4:
 			{		 // 激活纹理3,并绑定纹理 
 					  glActiveTextureARB(GL_TEXTURE4_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  // textureIndex = Triangle->at(i).texCoords[3]->textureIndex;
+					  textureIndex = Triangle->at(i).texCoords[3]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 3:
 			{		// 激活纹理2,并绑定纹理
 					  glActiveTextureARB(GL_TEXTURE3_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  //textureIndex = Triangle->at(i).texCoords[2]->textureIndex;
+					  textureIndex = Triangle->at(i).texCoords[2]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 2:
 			{		  //激活纹理1,并绑定纹理 
 					  glActiveTextureARB(GL_TEXTURE2_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  // textureIndex = Triangle->at(i).texCoords[1]->textureIndex;
+					  textureIndex = Triangle->at(i).texCoords[1]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 1:
 			{		  //激活纹理0,并绑定纹理 
 					  glActiveTextureARB(GL_TEXTURE1_ARB);
 					  glEnable(GL_TEXTURE_2D);
-					  //textureIndex = Triangle->at(i).texCoords[0]->textureIndex;
+					  textureIndex = Triangle->at(i).texCoords[0]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			}
@@ -1018,8 +1019,8 @@ void CGLBaseView::DrawScene()
 			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_DEPTH_BUFFER_BIT);
 		}
-		if (m_pDoc->_ftep)
-		{//m_pDoc->show_ftep&&&&!m_pDoc->isdrawbg
+		if (m_pDoc->_ftep&&m_pDoc->show_ftep&&!m_pDoc->isdrawbg)
+		{//
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);//填充模式
 			FindTextureElementPosition * ftep = m_pDoc->_ftep;
 			ftep->draw();

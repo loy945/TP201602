@@ -132,8 +132,8 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 					}
 				}
 			//生成临接信息
-				dr = new DistanceRecord();
-				dr->init(&plyLoader);
+ 				dr = new DistanceRecord();
+ 				dr->init(&plyLoader);
 
 			return TRUE;
 		}
@@ -2157,8 +2157,7 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 	//直接添加纹理坐标
 	for (int i = 0; i < v.size(); i++)
 	{
-		//testV
-		plyLoader.faceArry[v[i]].testV = true;
+		
 		/*for (int j = 0; j < 3; j++)
 		{
 			plyLoader.faceArry[v[i]].texCoord.cor[j][0] = (plyLoader.pointArry[plyLoader.faceArry[v[i]].ptnum[j]].u - centerPt.x)*kn + centerPt.x;
@@ -2185,6 +2184,8 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 		{
 			plyLoader.faceArry[v[i]].texCoord.update = false;
 			plyLoader.faceArry[v[i]].updateTexCoord();
+			//testV
+			plyLoader.faceArry[v[i]].testV = true;
 		}
 
 		ofstream f("vlog.txt", ios::app);
