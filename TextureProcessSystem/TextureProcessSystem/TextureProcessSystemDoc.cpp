@@ -55,7 +55,7 @@ CTextureProcessSystemDoc::CTextureProcessSystemDoc()
 	show_ftep = true;
 	offset[0] = 0;
 	offset[1] = 0;
-	offsetPT = new Point3D(0, 0, 0);
+	offsetPT = new Point3D(0.5, 0.5, 0);
 	isdrawbg = false;
 	istestV = false;
 }
