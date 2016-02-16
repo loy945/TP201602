@@ -2296,7 +2296,8 @@ Point3D * Polyhedron::getPos(Point3D **tir, Point3D * offset)
 {
 	TriangleCoorTrans tct;
 	tct.init(tir);
-	return tct.convertCoordUV2XY(offset);
+	//return tct.convertCoordUV2XY(offset);
+	return tct.convertCoordABC2XYZ(offset);
 }
 float Polyhedron::getFaceArea()
 {
@@ -2320,7 +2321,8 @@ void Polyhedron::mark()
 		tri[j] = new Point3D(pU[Face[0][j]], pV[Face[0][j]], 0);
 	}
 	tct.init(tri);
-	_2DOffset = tct.convertCoordUV2XY(m_2DOffset);
+	//_2DOffset = tct.convertCoordUV2XY(m_2DOffset);
+	_2DOffset = tct.convertCoordABC2XYZ(m_2DOffset);
 	m_centerPos->x = _2DOffset->x;
 	m_centerPos->y = _2DOffset->y;
 	m_centerPos->z = _2DOffset->z;

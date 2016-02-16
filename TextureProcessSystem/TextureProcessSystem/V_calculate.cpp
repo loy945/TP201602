@@ -4,7 +4,7 @@
 #include "Line.h"
 #include <math.h>
 #include "Point3D.h"
-
+#include "config.h"
 CV_calculate::CV_calculate()
 {
 }
@@ -35,7 +35,7 @@ void CV_calculate::rotateX(float *src, float * res, float c, float s)
 	for (int i = 0; i < 4; i++)
 	{
 		res[i] = cvmGet(&RES, i, 0);
-		if (abs(res[i])<0.00001)
+		if (abs(res[i])<minFloat)
 		{
 			res[i] = 0;
 		}
@@ -63,7 +63,7 @@ void CV_calculate::rotateY(float *src, float * res, float c, float s)
 	for (int i = 0; i < 4; i++)
 	{
 		res[i] = cvmGet(&RES, i, 0);
-		if (abs(res[i])<0.00001)
+		if (abs(res[i])<minFloat)
 		{
 			res[i] = 0;
 		}
@@ -92,7 +92,7 @@ void CV_calculate::rotateZ(float *src, float * res, float c,float s)
 	for (int i = 0; i < 4; i++)
 	{
 		res[i] = cvmGet(&RES, i, 0);
-		if (abs(res[i])<0.00001)
+		if (abs(res[i])<minFloat)
 		{
 			res[i] = 0;
 		}

@@ -2,4 +2,5 @@
 #define minTEDistance 0.03 //两个基元之间的最小距离
 #define selectRadius 500 //选择候选点的搜索半径 
 #define  minDis 0.08
-#define mapScale 0.2 //贴图映射缩放大小
+#define mapScale 0.3 //贴图映射缩放大小
+#define  minFloat 0.0000001

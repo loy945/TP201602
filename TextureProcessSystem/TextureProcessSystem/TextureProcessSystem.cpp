@@ -293,9 +293,7 @@ void CTextureProcessSystemApp::Check()
 	DWORD TimeStart, TimeEnd, TimeUsed;
 	DWORD m, s, ms;
 	TimeStart = GetTickCount();
-
-
-	/*for (int i = 0; i < pDoc->_ftep->m_targetTexture->tes.size(); i++)
+	for (int i = 0; i < pDoc->_ftep->m_targetTexture->tes.size(); i++)
 	{
 		if (!pDoc->_ftep->m_targetTexture->tes[i]->isShow) continue;
 		int textureIndex = pDoc->_ftep->m_targetTexture->tes[i]->textureIndex;
@@ -315,10 +313,10 @@ void CTextureProcessSystemApp::Check()
 				pDoc->plyLoader.pointArry[pDoc->plyLoader.faceArry[faceNum].ptnum[j]].z);
 		}
 		tct.init(tri);
-		Point3D * temp = tct.convertCoordXY2UV(&pt1);
+		Point3D * temp = tct.convertCoordXYZ2ABC(&pt1);
 		pDoc->offsetPT->x = temp->x;
 		pDoc->offsetPT->y = temp->y;
-
+		pDoc->offsetPT->z = temp->z;
 		pDoc->buildTexCoordByIndex(faceNum, 50, 50, 0.04, textureIndex);
 	}
 	f.close();
@@ -330,7 +328,8 @@ void CTextureProcessSystemApp::Check()
 	f2 << "element nums:" << pDoc->_ftep->m_targetTexture->tes.size() << endl;
 	f2 << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 	f2.close();
-	//1585测试用例*/
+	//1585测试用例
+	/*
 	int faceNum = pDoc->userSelectingTriangleIndex;
 	gl_face * faceSelect = &pDoc->plyLoader.faceArry.at(faceNum);
 	Point3D pt[10];
@@ -359,12 +358,12 @@ void CTextureProcessSystemApp::Check()
 		tri[i]=&pt[i];
 	}	
 	tct.init(tri);
-	Point3D * temp = tct.convertCoordXY2UV(&pt[3]);
-	pDoc->offsetPT->x = 0.5;
-	pDoc->offsetPT->y = 0.5;
-// 	Point3D * res1 = tct.convertCoordUV2XY(pDoc->offsetPT);
-// 	Point3D * res2 = tct.convertCoordUV2XY(&Point3D(0.5,0.5,0));
+	Point3D * temp = tct.convertCoordXYZ2ABC(&pt[7]);
+	pDoc->offsetPT->x = temp->x;
+	pDoc->offsetPT->y = temp->y;
+	pDoc->offsetPT->z = temp->z;
 	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.01, 2);
+	*/
 	/*
 	//计算基元在中心面片的相对位置
 	Point3D pt1;//第i个基元的位置
