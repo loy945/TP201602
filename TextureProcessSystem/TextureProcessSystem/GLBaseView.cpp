@@ -66,10 +66,9 @@ void CGLBaseView::OnDraw(CDC* pDC)
 	float b = (float)GetBValue(color) / 255;
 	glClearColor(r, g, b, 1.0f);//设置背景颜色
 
-	glClearDepth(100.0f);
+	glClearDepth(1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDepthFunc(GL_LESS);// 使用深度
-
 	glViewport(0, 0, w, h);  //设置视口
 	glLoadIdentity();
 	// 	//gluLookAt(0, 0, -10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);

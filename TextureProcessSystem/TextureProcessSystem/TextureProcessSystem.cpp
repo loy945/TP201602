@@ -331,8 +331,40 @@ void CTextureProcessSystemApp::Check()
 	f2 << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 	f2.close();
 	//1585测试用例*/
-	pDoc->buildTexCoordByIndex(pDoc->userSelectingTriangleIndex, 0, 100, 0.01, 2);
-	
+	int faceNum = pDoc->userSelectingTriangleIndex;
+	gl_face * faceSelect = &pDoc->plyLoader.faceArry.at(faceNum);
+	Point3D pt[10];
+	vector<Point3D> res;
+	//三角形面片的三个点
+	for (int k = 0; k < 3; k++)
+	{
+		pt[k].x = pDoc->plyLoader.pointArry.at(faceSelect->ptnum[k]).x;
+		pt[k].y = pDoc->plyLoader.pointArry.at(faceSelect->ptnum[k]).y;
+		pt[k].z = pDoc->plyLoader.pointArry.at(faceSelect->ptnum[k]).z;
+	}
+	//面片的重心
+	pt[3] = (pt[0] + pt[1] + pt[2]) / 3.0;
+	//边中点
+	pt[4] = (pt[0] + pt[1]) / 2.0;
+	pt[5] = (pt[1] + pt[2]) / 2.0;
+	pt[6] = (pt[2] + pt[0]) / 2.0;
+	//顶点与重心的连线中心点
+	pt[7] = (pt[3] + pt[0]) / 2.0;
+	pt[8] = (pt[3] + pt[1]) / 2.0;
+	pt[9] = (pt[3] + pt[2]) / 2.0;	
+	TriangleCoorTrans tct;
+	Point3D * tri[3];
+	for (int i = 0; i < 3;i++)
+	{
+		tri[i]=&pt[i];
+	}	
+	tct.init(tri);
+	Point3D * temp = tct.convertCoordXY2UV(&pt[3]);
+	pDoc->offsetPT->x = 0.5;
+	pDoc->offsetPT->y = 0.5;
+// 	Point3D * res1 = tct.convertCoordUV2XY(pDoc->offsetPT);
+// 	Point3D * res2 = tct.convertCoordUV2XY(&Point3D(0.5,0.5,0));
+	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.01, 2);
 	/*
 	//计算基元在中心面片的相对位置
 	Point3D pt1;//第i个基元的位置
