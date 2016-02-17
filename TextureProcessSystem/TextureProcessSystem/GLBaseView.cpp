@@ -10,6 +10,7 @@
 #include <fstream>
 #include "V_calculate.h"
 #include <math.h>
+#include "config.h"
 using namespace std;
 // CGLBaseView
 
@@ -227,20 +228,18 @@ void CGLBaseView::drawPLYwithMultiTexture()
 		float v1x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
 		float v1y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
 		float v1z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].z;
-
 		float v2x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].x;
 		float v2y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].y;
 		float v2z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].z;
-
 		float v3x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].x;
 		float v3y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].y;
 		float v3z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].z;
-
 		float v1u, v1v, v2u, v2v, v3u, v3v;
-		if (Triangle->at(i).texCoords.size() > 0)
+		int texCoordsSize = Triangle->at(i).texCoords.size();
+		if (texCoordsSize > 0)
 		{
-			//重叠区域大于4层，警告信息
-			if (Triangle->at(i).texCoords.size() > 6)
+			//重叠区域大于maxMultiTextureLayer，警告信息
+			if (texCoordsSize > maxMultiTextureLayer)
 			{
 				if (m_pDoc->logTex)
 				{
@@ -249,6 +248,7 @@ void CGLBaseView::drawPLYwithMultiTexture()
 					f << "Triangle" << i << " texCoords.size: " << Triangle->at(i).texCoords.size() << endl;
 					for (int k = 0; k < Triangle->at(i).texCoords.size(); k++)
 					{
+						f << "textureIndex: " << Triangle->at(i).texCoords[k]->textureIndex << endl;
 						f << Triangle->at(i).texCoords[k]->cor[0][0] << "," << Triangle->at(i).texCoords[k]->cor[0][1] << endl;
 						f << Triangle->at(i).texCoords[k]->cor[1][0] << "," << Triangle->at(i).texCoords[k]->cor[1][1] << endl;
 						f << Triangle->at(i).texCoords[k]->cor[2][0] << "," << Triangle->at(i).texCoords[k]->cor[2][1] << endl;
@@ -257,113 +257,36 @@ void CGLBaseView::drawPLYwithMultiTexture()
 					f.close();
 				}
 				continue;
-			}
-			
+			}			
 			int textureIndex = 2;
-			switch (Triangle->at(i).texCoords.size())
+			for (int j = 1; j <= texCoordsSize; j++)
 			{
-			case 6:
-			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 6);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex=Triangle->at(i).texCoords[5]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
+				glActiveTextureARB(GL_TEXTURE0_ARB + j);
+				glEnable(GL_TEXTURE_2D);
+				textureIndex = Triangle->at(i).texCoords[j-1]->textureIndex;
+				glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
-			case 5:
-			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 5);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex = Triangle->at(i).texCoords[4]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
-			}
-			case 4:
-			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 4);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex = Triangle->at(i).texCoords[3]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
-			}
-			case 3:
-			{		// 激活纹理2,并绑定纹理
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 3);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex = Triangle->at(i).texCoords[2]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
-			}
-			case 2:
-			{		  //激活纹理1,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 2);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex = Triangle->at(i).texCoords[1]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
-			}
-			case 1:
-			{		  //激活纹理0,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE0_ARB + 1);
-					  glEnable(GL_TEXTURE_2D);
-					  textureIndex = Triangle->at(i).texCoords[0]->textureIndex;
-					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
-			}
-			}
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glColor3f(0.8, 0.8, 0.8);
 			glBegin(GL_TRIANGLES);//显示
 			glNormal3fv(Triangle->at(i).n);
-			switch (Triangle->at(i).texCoords.size())
+			for (int j = 1; j <= texCoordsSize; j++)
 			{
-			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[0][0], Triangle->at(i).texCoords[5]->cor[0][1]);
-			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[0][0], Triangle->at(i).texCoords[4]->cor[0][1]);
-			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[0][0], Triangle->at(i).texCoords[3]->cor[0][1]);
-			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[0][0], Triangle->at(i).texCoords[2]->cor[0][1]);
-			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[0][0], Triangle->at(i).texCoords[1]->cor[0][1]);
-			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[0][0], Triangle->at(i).texCoords[0]->cor[0][1]);
-			}
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, Triangle->at(i).texCoords[j - 1]->cor[0][0], Triangle->at(i).texCoords[j - 1]->cor[0][1]);
+			}			
 			glVertex3f(v1x, v1y, v1z);
-
-			switch (Triangle->at(i).texCoords.size())
+			for (int j = 1; j <= texCoordsSize; j++)
 			{
-			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[1][0], Triangle->at(i).texCoords[5]->cor[1][1]);
-			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[1][0], Triangle->at(i).texCoords[4]->cor[1][1]);
-			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[1][0], Triangle->at(i).texCoords[3]->cor[1][1]);
-			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[1][0], Triangle->at(i).texCoords[2]->cor[1][1]);
-			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[1][0], Triangle->at(i).texCoords[1]->cor[1][1]);
-			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[1][0], Triangle->at(i).texCoords[0]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, Triangle->at(i).texCoords[j - 1]->cor[1][0], Triangle->at(i).texCoords[j - 1]->cor[1][1]);
 			}
 			glVertex3f(v2x, v2y, v2z);
-
-			switch (Triangle->at(i).texCoords.size())
+			for (int j = 1; j <= texCoordsSize; j++)
 			{
-			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[2][0], Triangle->at(i).texCoords[5]->cor[2][1]);
-			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[2][0], Triangle->at(i).texCoords[4]->cor[2][1]);
-			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[2][0], Triangle->at(i).texCoords[3]->cor[2][1]);
-			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[2][0], Triangle->at(i).texCoords[2]->cor[2][1]);
-			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[2][0], Triangle->at(i).texCoords[1]->cor[2][1]);
-			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[2][0], Triangle->at(i).texCoords[0]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, Triangle->at(i).texCoords[j - 1]->cor[2][0], Triangle->at(i).texCoords[j - 1]->cor[2][1]);
 			}
 			glVertex3f(v3x, v3y, v3z);
-
-
+			glEnd();
 		}
-		glEnd();
-
+		
 		if (Triangle->at(i).texCoords.size() > 1)
 		{
 			if (m_pDoc->logTex)
@@ -372,6 +295,7 @@ void CGLBaseView::drawPLYwithMultiTexture()
 				f << "Triangle  " << i << endl;
 				for (int k = 0; k < Triangle->at(i).texCoords.size(); k++)
 				{
+					f << "textureIndex: " << Triangle->at(i).texCoords[k]->textureIndex << endl;
 					f << Triangle->at(i).texCoords[k]->cor[0][0] << "," << Triangle->at(i).texCoords[k]->cor[0][1] << endl;
 					f << Triangle->at(i).texCoords[k]->cor[1][0] << "," << Triangle->at(i).texCoords[k]->cor[1][1] << endl;
 					f << Triangle->at(i).texCoords[k]->cor[2][0] << "," << Triangle->at(i).texCoords[k]->cor[2][1] << endl;
@@ -380,72 +304,14 @@ void CGLBaseView::drawPLYwithMultiTexture()
 				f.close();
 			}
 		}
-
-		switch (Triangle->at(i).texCoords.size())
+		for (int j = 1; j <= texCoordsSize; j++)
 		{
-		case 6:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 6);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		case 5:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 5);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		case 4:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 4);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		case 3:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 3);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		case 2:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 2);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		case 1:
-		{
-				  glActiveTextureARB(GL_TEXTURE0_ARB + 1);
-				  glDisable(GL_TEXTURE_2D);
-		}
-		}
-		/*if (Triangle->at(i).texCoords.size() == 1)
-		{
-		glActiveTextureARB(GL_TEXTURE1_ARB);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, m_texture[1].ID);
-
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glColor3f(1, 1, 1);
-		glBegin(GL_TRIANGLES);//显示
-		glNormal3fv(Triangle->at(i).n);
-
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[0][0], Triangle->at(i).texCoords[0]->cor[0][1]);
-		glVertex3f(v1x, v1y, v1z);
-
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[1][0], Triangle->at(i).texCoords[0]->cor[1][1]);
-		glVertex3f(v2x, v2y, v2z);
-
-		glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[2][0], Triangle->at(i).texCoords[0]->cor[2][1]);
-		glVertex3f(v3x, v3y, v3z);
-		glEnd();
-
-		glActiveTextureARB(GL_TEXTURE1_ARB);
-		glDisable(GL_TEXTURE_2D);
-
-		}*/
-
-
+			glActiveTextureARB(GL_TEXTURE0_ARB + j);
+			glDisable(GL_TEXTURE_2D);
+		}		
 	}
-
-	glFlush();
+	glFinish();
 	m_pDoc->logTex = false;
-
 }
 
 void CGLBaseView::drawPLY()
@@ -1009,6 +875,11 @@ void CGLBaseView::DrawScene()
 			drawPLY();
 			glDisable(GL_POLYGON_OFFSET_LINE);
 
+			glEnable(GL_POLYGON_OFFSET_FILL);
+			glPolygonOffset(-1.1f, -1.1f);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);;
+			drawPLYwithMultiTextureTEST();
+			glDisable(GL_POLYGON_OFFSET_FILL);
 
 
 		}
@@ -1407,4 +1278,76 @@ void CGLBaseView::DrawTest()
 
 
 	//glFlush();	                     /**< 强制执行所有的OpenGL命令 */
+}
+void CGLBaseView::drawPLYwithMultiTextureTEST()
+{
+	vector<gl_face> * Triangle = &(m_pDoc->plyLoader.faceArry);
+	vector<gl_point> * Vertex = &(m_pDoc->plyLoader.pointArry);
+	vector<gl_point2d> * Vertex2d = &(m_pDoc->plyLoader.point2DArry);
+	int i = 8451;
+	float v1x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
+	float v1y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
+	float v1z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].z;
+	float v2x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].x;
+	float v2y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].y;
+	float v2z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[1]].z;
+	float v3x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].x;
+	float v3y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].y;
+	float v3z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].z;
+	float v1u, v1v, v2u, v2v, v3u, v3v;
+	int texCoordsSize = 3;
+	int textureIndex = 2;
+	int textureIndexs[4] = { 43, 47, 6, 48 };
+	float texCoords[4][3][2] = {
+		0.958469, 0.171411,
+		1.03641, 1.05568,
+		0.572128, 1.00791,
+
+		0.958469, 0.171411,
+		1.03641, 1.05568,
+		0.572128, 1.00791,
+
+
+
+		0.67861, 1.02167,
+		0.673813, 0.137932,
+		0.176888, 0.26701,
+		0.440943, 0.792896,
+		0.216928, -0.10618,
+		-0.272575, -0.0122489
+	};
+	
+	for (int j = 1; j <= texCoordsSize; j++)
+	{
+		glActiveTextureARB(GL_TEXTURE0_ARB + j);
+		glEnable(GL_TEXTURE_2D);
+		textureIndex = textureIndexs[j-1];
+		glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
+	}
+	glColor3f(0.8, 0.8, 0.8);
+	glBegin(GL_TRIANGLES);//显示
+	glNormal3fv(Triangle->at(i).n);
+	for (int j = 1; j <= texCoordsSize; j++)
+	{
+		glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, texCoords[j - 1][0][0], texCoords[j - 1][0][1]);
+	}
+	glVertex3f(v1x, v1y, v1z);
+	for (int j = 1; j <= texCoordsSize; j++)
+	{
+		glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, texCoords[j - 1][1][0], texCoords[j - 1][1][1]);
+	}
+	glVertex3f(v2x, v2y, v2z);
+	for (int j = 1; j <= texCoordsSize; j++)
+	{
+		glMultiTexCoord2fARB(GL_TEXTURE0_ARB + j, texCoords[j - 1][2][0], texCoords[j - 1][2][1]);
+	}
+	glVertex3f(v3x, v3y, v3z);
+	glEnd();
+	for (int j = 1; j <= texCoordsSize; j++)
+	{
+		glActiveTextureARB(GL_TEXTURE0_ARB + j);
+		glDisable(GL_TEXTURE_2D);
+	}
+	glFinish();
+
 }

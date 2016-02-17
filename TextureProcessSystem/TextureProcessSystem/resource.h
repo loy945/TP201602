@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by TextureProcessSystem.rc
+// Microsoft Visual C++ 生成的包含文件。
+// 供 TextureProcessSystem.rc 使用
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
@@ -17,13 +17,15 @@
 #define ID_BUTTON32786                  32786
 #define ID_BUTTON_CHECK                 32786
 #define ID_BUTTON_SELECTFACE            32787
+#define ID_BUTTON_Ma                    32788
+#define ID_BUTTON_MappingToFace         32789
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_COMMAND_VALUE         32790
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

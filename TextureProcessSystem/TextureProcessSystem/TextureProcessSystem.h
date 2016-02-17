@@ -33,6 +33,7 @@ public:
 	afx_msg void OnSetValueM();
 	afx_msg void OnSetValueT();
 	afx_msg void Check();
+	afx_msg void MappingToFace();
 	afx_msg void SelectFace();
 	DECLARE_MESSAGE_MAP()
 };

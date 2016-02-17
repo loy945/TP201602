@@ -4,3 +4,4 @@
 #define  minDis 0.03//0.08
 #define mapScale 0.2 //ÌùÍ¼Ó³ÉäËõ·Å´óĞ¡
 #define  minFloat 0.0000001
+#define maxMultiTextureLayer 10

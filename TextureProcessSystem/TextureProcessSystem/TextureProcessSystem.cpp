@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CTextureProcessSystemApp, CWinApp)
 	ON_COMMAND(ID_BUTTON_SETVALUE_M, &CTextureProcessSystemApp::OnSetValueM)
 	ON_COMMAND(ID_BUTTON_SETVALUE_T, &CTextureProcessSystemApp::OnSetValueT)
 	ON_COMMAND(ID_BUTTON_CHECK, &CTextureProcessSystemApp::Check)
+	ON_COMMAND(ID_BUTTON_MappingToFace, &CTextureProcessSystemApp::MappingToFace)
 	ON_COMMAND(ID_BUTTON_SELECTFACE, &CTextureProcessSystemApp::SelectFace)
 	// 基于文件的标准文档命令
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
@@ -328,8 +329,17 @@ void CTextureProcessSystemApp::Check()
 	f2 << "element nums:" << pDoc->_ftep->m_targetTexture->tes.size() << endl;
 	f2 << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 	f2.close();
-	//1585测试用例
-	/*
+	pDoc->logTex = true;
+	pDoc->show_ftep = false; 
+	pDoc->isdrawbg = true;
+}
+
+void CTextureProcessSystemApp::MappingToFace()
+{
+	CFrameWnd* pMain = (CFrameWnd*)CWinThread::m_pMainWnd;
+	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
+	pDoc->istestV = false;
+	//测试用例
 	int faceNum = pDoc->userSelectingTriangleIndex;
 	gl_face * faceSelect = &pDoc->plyLoader.faceArry.at(faceNum);
 	Point3D pt[10];
@@ -350,70 +360,25 @@ void CTextureProcessSystemApp::Check()
 	//顶点与重心的连线中心点
 	pt[7] = (pt[3] + pt[0]) / 2.0;
 	pt[8] = (pt[3] + pt[1]) / 2.0;
-	pt[9] = (pt[3] + pt[2]) / 2.0;	
+	pt[9] = (pt[3] + pt[2]) / 2.0;
 	TriangleCoorTrans tct;
 	Point3D * tri[3];
-	for (int i = 0; i < 3;i++)
+	for (int i = 0; i < 3; i++)
 	{
-		tri[i]=&pt[i];
-	}	
+		tri[i] = &pt[i];
+	}
 	tct.init(tri);
 	Point3D * temp = tct.convertCoordXYZ2ABC(&pt[3]);
 	pDoc->offsetPT->x = temp->x;
 	pDoc->offsetPT->y = temp->y;
 	pDoc->offsetPT->z = temp->z;
-	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.008, rand()%48+2);
-	/*
-	//计算基元在中心面片的相对位置
-	Point3D pt1;//第i个基元的位置
-	pt1.x = pDoc->plyLoader.faceArry[1585].corex;
-	pt1.y = pDoc->plyLoader.faceArry[1585].corey;
-	pt1.z = pDoc->plyLoader.faceArry[1585].corez;
-	//所在面片序号
-	int faceNum = 1585;
-	TriangleCoorTrans tct;
-	Point3D * tri[3];
-	for (int j = 0; j < 3; j++)
-	{
-		tri[j] = new Point3D(pDoc->plyLoader.pointArry[pDoc->plyLoader.faceArry[faceNum].ptnum[j]].x,
-			pDoc->plyLoader.pointArry[pDoc->plyLoader.faceArry[faceNum].ptnum[j]].y,
-			pDoc->plyLoader.pointArry[pDoc->plyLoader.faceArry[faceNum].ptnum[j]].z);
-	}
-	tct.init(tri);
-	Point3D * temp = tct.convertCoordXY2UV(&pt1);
-	pDoc->offsetPT->x = temp->x;
-	pDoc->offsetPT->y = temp->y;
-	pDoc->buildTexCoordByIndex(1585, 50, 50, 0.04);
-	*/
-/*	pDoc->buildTexCoordByIndex(1585, 50, 50, 0.04);
-	pDoc->buildTexCoordByIndex(1587, 50, 50, 0.04);
-	pDoc->buildTexCoordByIndex(3700, 50, 50, 0.04);
-	pDoc->buildTexCoordByIndex(3786, 50, 50, 0.04);
-	pDoc->buildTexCoordByIndex(1690, 50, 50, 0.04);
-	pDoc->buildTexCoordByIndex(3701, 50, 50, 0.04);
+	pDoc->buildTexCoordByIndex(faceNum, 0, 100, 0.008, rand() % 48 + 2);
 	
-	*/
-	/*pDoc->calTexCorByIndex(1585, 8);
-	pDoc->calTexCorByIndex(1587, 8);
-	pDoc->calTexCorByIndex(3700, 8);
-	pDoc->calTexCorByIndex(3786, 8);
-	pDoc->calTexCorByIndex(1690, 8);
-	pDoc->calTexCorByIndex(3701, 8);*/
-	
-	//pDoc->buildTexCoordByIndex(0, 5,20);
-	//pDoc->calTexCorByIndex(1585, 8);
 
-	/*pDoc->buildTexCoordByIndex(1587, 4);
-	pDoc->buildTexCoordByIndex(3700, 4);
-	pDoc->buildTexCoordByIndex(3786, 4);
-	pDoc->buildTexCoordByIndex(1690, 4);
-	pDoc->buildTexCoordByIndex(3701, 4);*/
 	pDoc->logTex = true;
-	pDoc->show_ftep = false; 
+	pDoc->show_ftep = false;
 	pDoc->isdrawbg = true;
 }
-
-
 //CString s1;
 //s1.Format("新添加:  %d,times: %d", pDoc->count - lastCount, times);
 //lastCount = pDoc->count;
