@@ -264,42 +264,42 @@ void CGLBaseView::drawPLYwithMultiTexture()
 			{
 			case 6:
 			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE6_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 6);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex=Triangle->at(i).texCoords[5]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 5:
 			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE5_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 5);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex = Triangle->at(i).texCoords[4]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 4:
 			{		 // 激活纹理3,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE4_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 4);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex = Triangle->at(i).texCoords[3]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 3:
 			{		// 激活纹理2,并绑定纹理
-					  glActiveTextureARB(GL_TEXTURE3_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 3);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex = Triangle->at(i).texCoords[2]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 2:
 			{		  //激活纹理1,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE2_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 2);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex = Triangle->at(i).texCoords[1]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
 			}
 			case 1:
 			{		  //激活纹理0,并绑定纹理 
-					  glActiveTextureARB(GL_TEXTURE1_ARB);
+					  glActiveTextureARB(GL_TEXTURE0_ARB + 1);
 					  glEnable(GL_TEXTURE_2D);
 					  textureIndex = Triangle->at(i).texCoords[0]->textureIndex;
 					  glBindTexture(GL_TEXTURE_2D, m_texture[textureIndex].ID);
@@ -312,51 +312,51 @@ void CGLBaseView::drawPLYwithMultiTexture()
 			switch (Triangle->at(i).texCoords.size())
 			{
 			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE6_ARB, Triangle->at(i).texCoords[5]->cor[0][0], Triangle->at(i).texCoords[5]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[0][0], Triangle->at(i).texCoords[5]->cor[0][1]);
 			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE5_ARB, Triangle->at(i).texCoords[4]->cor[0][0], Triangle->at(i).texCoords[4]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[0][0], Triangle->at(i).texCoords[4]->cor[0][1]);
 			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE4_ARB, Triangle->at(i).texCoords[3]->cor[0][0], Triangle->at(i).texCoords[3]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[0][0], Triangle->at(i).texCoords[3]->cor[0][1]);
 			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE3_ARB, Triangle->at(i).texCoords[2]->cor[0][0], Triangle->at(i).texCoords[2]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[0][0], Triangle->at(i).texCoords[2]->cor[0][1]);
 			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE2_ARB, Triangle->at(i).texCoords[1]->cor[0][0], Triangle->at(i).texCoords[1]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[0][0], Triangle->at(i).texCoords[1]->cor[0][1]);
 			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[0][0], Triangle->at(i).texCoords[0]->cor[0][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[0][0], Triangle->at(i).texCoords[0]->cor[0][1]);
 			}
 			glVertex3f(v1x, v1y, v1z);
 
 			switch (Triangle->at(i).texCoords.size())
 			{
 			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE6_ARB, Triangle->at(i).texCoords[5]->cor[1][0], Triangle->at(i).texCoords[5]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[1][0], Triangle->at(i).texCoords[5]->cor[1][1]);
 			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE5_ARB, Triangle->at(i).texCoords[4]->cor[1][0], Triangle->at(i).texCoords[4]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[1][0], Triangle->at(i).texCoords[4]->cor[1][1]);
 			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE4_ARB, Triangle->at(i).texCoords[3]->cor[1][0], Triangle->at(i).texCoords[3]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[1][0], Triangle->at(i).texCoords[3]->cor[1][1]);
 			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE3_ARB, Triangle->at(i).texCoords[2]->cor[1][0], Triangle->at(i).texCoords[2]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[1][0], Triangle->at(i).texCoords[2]->cor[1][1]);
 			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE2_ARB, Triangle->at(i).texCoords[1]->cor[1][0], Triangle->at(i).texCoords[1]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[1][0], Triangle->at(i).texCoords[1]->cor[1][1]);
 			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[1][0], Triangle->at(i).texCoords[0]->cor[1][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[1][0], Triangle->at(i).texCoords[0]->cor[1][1]);
 			}
 			glVertex3f(v2x, v2y, v2z);
 
 			switch (Triangle->at(i).texCoords.size())
 			{
 			case 6:
-				glMultiTexCoord2fARB(GL_TEXTURE6_ARB, Triangle->at(i).texCoords[5]->cor[2][0], Triangle->at(i).texCoords[5]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 6, Triangle->at(i).texCoords[5]->cor[2][0], Triangle->at(i).texCoords[5]->cor[2][1]);
 			case 5:
-				glMultiTexCoord2fARB(GL_TEXTURE5_ARB, Triangle->at(i).texCoords[4]->cor[2][0], Triangle->at(i).texCoords[4]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 5, Triangle->at(i).texCoords[4]->cor[2][0], Triangle->at(i).texCoords[4]->cor[2][1]);
 			case 4:
-				glMultiTexCoord2fARB(GL_TEXTURE4_ARB, Triangle->at(i).texCoords[3]->cor[2][0], Triangle->at(i).texCoords[3]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 4, Triangle->at(i).texCoords[3]->cor[2][0], Triangle->at(i).texCoords[3]->cor[2][1]);
 			case 3:
-				glMultiTexCoord2fARB(GL_TEXTURE3_ARB, Triangle->at(i).texCoords[2]->cor[2][0], Triangle->at(i).texCoords[2]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 3, Triangle->at(i).texCoords[2]->cor[2][0], Triangle->at(i).texCoords[2]->cor[2][1]);
 			case 2:
-				glMultiTexCoord2fARB(GL_TEXTURE2_ARB, Triangle->at(i).texCoords[1]->cor[2][0], Triangle->at(i).texCoords[1]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 2, Triangle->at(i).texCoords[1]->cor[2][0], Triangle->at(i).texCoords[1]->cor[2][1]);
 			case 1:
-				glMultiTexCoord2fARB(GL_TEXTURE1_ARB, Triangle->at(i).texCoords[0]->cor[2][0], Triangle->at(i).texCoords[0]->cor[2][1]);
+				glMultiTexCoord2fARB(GL_TEXTURE0_ARB + 1, Triangle->at(i).texCoords[0]->cor[2][0], Triangle->at(i).texCoords[0]->cor[2][1]);
 			}
 			glVertex3f(v3x, v3y, v3z);
 
@@ -385,32 +385,32 @@ void CGLBaseView::drawPLYwithMultiTexture()
 		{
 		case 6:
 		{
-				  glActiveTextureARB(GL_TEXTURE6_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 6);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		case 5:
 		{
-				  glActiveTextureARB(GL_TEXTURE5_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 5);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		case 4:
 		{
-				  glActiveTextureARB(GL_TEXTURE4_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 4);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		case 3:
 		{
-				  glActiveTextureARB(GL_TEXTURE3_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 3);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		case 2:
 		{
-				  glActiveTextureARB(GL_TEXTURE2_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 2);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		case 1:
 		{
-				  glActiveTextureARB(GL_TEXTURE1_ARB);
+				  glActiveTextureARB(GL_TEXTURE0_ARB + 1);
 				  glDisable(GL_TEXTURE_2D);
 		}
 		}
