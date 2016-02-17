@@ -132,8 +132,8 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 					}
 				}
 			//生成临接信息
-//  				dr = new DistanceRecord();
-//  				dr->init(&plyLoader);
+ 				dr = new DistanceRecord();
+ 				dr->init(&plyLoader);
 
 			return TRUE;
 		}

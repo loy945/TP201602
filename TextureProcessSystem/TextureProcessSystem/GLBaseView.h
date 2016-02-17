@@ -50,6 +50,7 @@ public:
 	void drawPLY(void);
 	void drawPLYwithMultiTexture();
 	void drawPLYwithMultiTextureTEST();
+	void drawPLYwithMultiTextureTEST2();
 	//2014.8.11 模型旋转变换所需变量
 	bool isInit;
 	//2015.3.2添加模型展开为平面变量

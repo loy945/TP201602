@@ -154,6 +154,8 @@ bool CGLBaseView::isExtensionSupported(const char* string)
 	char *extension;			/**< 指向扩展字符串的指针 */
 	char *end;				    /**< 最后一个字符指针 */
 	int idx;
+	int nTextureUnits = 0;
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &nTextureUnits);
 
 	extension = (char*)glGetString(GL_EXTENSIONS);
 	if (extension == NULL)
@@ -879,6 +881,7 @@ void CGLBaseView::DrawScene()
 			glPolygonOffset(-1.1f, -1.1f);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);;
 			drawPLYwithMultiTextureTEST();
+			drawPLYwithMultiTextureTEST2();
 			glDisable(GL_POLYGON_OFFSET_FILL);
 
 
@@ -1295,9 +1298,9 @@ void CGLBaseView::drawPLYwithMultiTextureTEST()
 	float v3y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].y;
 	float v3z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[2]].z;
 	float v1u, v1v, v2u, v2v, v3u, v3v;
-	int texCoordsSize = 3;
+	int texCoordsSize = 4;
 	int textureIndex = 2;
-	int textureIndexs[4] = { 43, 47, 6, 48 };
+	int textureIndexs[4] = { 43, 47, 48, 6 };
 	float texCoords[4][3][2] = {
 		0.958469, 0.171411,
 		1.03641, 1.05568,
@@ -1307,14 +1310,13 @@ void CGLBaseView::drawPLYwithMultiTextureTEST()
 		1.03641, 1.05568,
 		0.572128, 1.00791,
 
-
+		0.440943, 0.792896,
+		0.216928, -0.10618,
+		- 0.272575, -0.0122489,
 
 		0.67861, 1.02167,
 		0.673813, 0.137932,
-		0.176888, 0.26701,
-		0.440943, 0.792896,
-		0.216928, -0.10618,
-		-0.272575, -0.0122489
+		0.176888, 0.26701
 	};
 	
 	for (int j = 1; j <= texCoordsSize; j++)
@@ -1349,5 +1351,9 @@ void CGLBaseView::drawPLYwithMultiTextureTEST()
 		glDisable(GL_TEXTURE_2D);
 	}
 	glFinish();
+
+}
+void CGLBaseView::drawPLYwithMultiTextureTEST2()
+{
 
 }
