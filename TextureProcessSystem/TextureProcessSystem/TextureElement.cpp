@@ -118,7 +118,6 @@ void TextureElement::deleteNdoe(LinkData * node)
 			link.erase(link.begin() + i);
 			linkSize--;
 		}
-			
 	}
 }
 

@@ -8,9 +8,9 @@ public:
 	Texture(void);
 	~Texture(void);
 	vector<TextureElement *> tes;
-
 public:
 	bool addTE(TextureElement * te);
+	bool deleteTE(TextureElement * te);
 	bool addLink(TextureElement * te1,TextureElement *te2);//给已经存在的te1 te2添加连通关系
 	double getError(LinkData * link1,LinkData * link2);
 	void textureSort();

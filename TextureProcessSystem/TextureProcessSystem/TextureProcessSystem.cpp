@@ -256,7 +256,6 @@ void CTextureProcessSystemApp::SelectFace()
 			count++;
 		}	
 	}
-
 	CString s1;
 	s1.Format("Select %d face",count);
 	AfxMessageBox(s1);
@@ -270,7 +269,6 @@ void CTextureProcessSystemApp::SelectFace()
 	CString s1;
 	s1.Format("%d ",_ftep->m_targetTexture->tes.size());
 	AfxMessageBox(s1);
-
 }
 void CTextureProcessSystemApp::Check()
 {

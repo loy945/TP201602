@@ -35,6 +35,16 @@ bool TargetTexture::deleteLink(TextureElement *te1, TextureElement *te2)
 	}
 	te2->textureElementSort();	
 	
+	for (int i = 0; i < lines.size(); i++)
+	{
+		if ((lines.at(i).startElement == te1&&lines.at(i).endElement == te2)||
+			(lines.at(i).startElement == te2&&lines.at(i).endElement == te1))
+		{
+			lines.erase(lines.begin() + i);
+			return true;
+		}
+	}
+	return true;
 }
 bool TargetTexture::addLink(TextureElement *te1, TextureElement *te2)
 {

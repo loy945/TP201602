@@ -369,17 +369,17 @@ void FindTextureElementPosition::draw()
 	glEnd(); // 四边形绘制结束
 
 	//画线
-// 	glColor3f(1, 1, 1);
-// 	glBegin(GL_LINES);
-// 	for (i = 0; i < m_targetTexture->lines.size(); i++)
-// 	{
-// 		if (m_targetTexture->lines[i].startElement->isShow&&m_targetTexture->lines[i].endElement->isShow)
-// 		{
-// 		glVertex3f(m_targetTexture->lines[i].start.x, m_targetTexture->lines[i].start.y, m_targetTexture->lines[i].start.z);
-// 		glVertex3f(m_targetTexture->lines[i].end.x, m_targetTexture->lines[i].end.y, m_targetTexture->lines[i].end.z);
-// 		}
-// 	}
-// 	glEnd();
+	glColor3f(1, 1, 1);
+	glBegin(GL_LINES);
+	for (i = 0; i < m_targetTexture->lines.size(); i++)
+	{
+		if (m_targetTexture->lines[i].startElement->isShow&&m_targetTexture->lines[i].endElement->isShow)
+		{
+		glVertex3f(m_targetTexture->lines[i].start.x, m_targetTexture->lines[i].start.y, m_targetTexture->lines[i].start.z);
+		glVertex3f(m_targetTexture->lines[i].end.x, m_targetTexture->lines[i].end.y, m_targetTexture->lines[i].end.z);
+		}
+	}
+	glEnd();
 	glFlush();//立即渲染
 }
 bool FindTextureElementPosition::amendTargetTE(TextureElement * te)
@@ -631,7 +631,7 @@ bool FindTextureElementPosition::buildTargetTextureElement(TextureElement * cent
 		if (m_pDR->m_triangleFaceArry[pt.beLongFaceID].isMark)
 		{
 			tex->isfixed = true;
-			tex->isShow = true;
+			tex->isShow = false;
 		}
 	}
 	//linkPairs
@@ -736,7 +736,6 @@ bool FindTextureElementPosition::buildByStep()
 		//标记覆盖的面
 		nexte->textureElementSort();
 		markCoveredFace(targetCenter);
-		
 	}
 }
 void FindTextureElementPosition::amend()
@@ -998,4 +997,123 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 			d = 1;
 		}
 	}
+}
+void FindTextureElementPosition::collapse(TextureElement * te1, TextureElement * te2)
+{
+	//合并两个过近的纹理元素
+	int size1 = te1->link.size();
+	int size2 = te2->link.size();
+	
+	for (int i = 0; i < size1; i++)
+	{
+		TextureElement * linkedElement = te1->link.at(0)->linkElement;
+		//把te1的link加到te2中
+		m_targetTexture->addLink(te2, linkedElement);
+		//把te1所有link删掉
+		m_targetTexture->deleteLink(te1, linkedElement);
+	}
+	te1->isShow = false;
+	te1->isfixed = true;
+}
+void FindTextureElementPosition::detectCollapse()
+{
+	//
+/*	for (int w = 0; w < m_targetTexture->tes.size(); w++)
+	{
+		TextureElement * te1 = m_targetTexture->tes[w];
+		vector<gl_face*> nearbyFace;
+		selectNearByFace(te1, minCollapseDistance, nearbyFace);
+		for (int i = 0; i < nearbyFace.size(); i++)
+		{
+			for (int j = 0; j < m_targetTexture->tes.size(); j++)
+			{
+				if( (m_targetTexture->tes.at(j)->face->facenum == nearbyFace.at(i)->facenum)&&
+					(te1->face->facenum != nearbyFace.at(i)->facenum))
+				{
+					TextureElement * te2 = m_targetTexture->tes.at(j);
+					collapse(te1, te2);
+					return;
+				}
+			}
+		}
+	}*/
+	for (int w = 0; w < m_targetTexture->tes.size(); w++)
+	{
+		TextureElement * te1 = m_targetTexture->tes[w];
+		if (!te1->isShow)
+		{
+			continue;
+		}
+		for (int j = 0; j < m_targetTexture->tes.size(); j++)
+		{
+			TextureElement * te2 = m_targetTexture->tes.at(j);	
+			if (!te2->isShow)
+			{
+				continue;
+			}
+			float odis = (*te1->getPos() - *te2->getPos()).getDistance();
+			if (odis <minCollapseDistance&&te1->index!=te2->index)
+			{			
+				collapse(te1, te2);
+				return;
+			}
+		}
+		
+	}
+}
+
+void FindTextureElementPosition::selectNearByFace(TextureElement * te, double radius, vector<gl_face *> &faceIndex)
+{
+	if (!te)
+	{
+		return;
+	}
+	int faceNum = te->face->facenum;
+	vector<int> faces;
+	vector<float> distancesFromFace1;
+	vector<int> facesDetected;
+	faces.push_back(faceNum);
+	float zeroDistance = 0;
+	distancesFromFace1.push_back(zeroDistance);
+	while (faces.size() > 0)
+	{
+		int face = faces[0];
+		float dis = distancesFromFace1[0];
+		for (int j = 0; j < m_pDR->m_triangleFaceArry[face].faceNearByNums; j++)
+		{
+			int num = m_pDR->m_triangleFaceArry[face].faceNearByIndex[j];
+			float distanceFromFace1 = dis + m_pDR->m_triangleFaceArry[face].faceNearByDistance[j];
+			bool isAddedIn = false;
+			for (int k = 0; k < facesDetected.size(); k++)
+			{
+				if (num == facesDetected[k])
+				{
+					isAddedIn = true;
+				}
+			}
+			if (!isAddedIn)
+			{
+				int facei = num;
+				if (distanceFromFace1 < radius)
+				{
+					faces.push_back(facei);
+					distancesFromFace1.push_back(distanceFromFace1);
+				}
+			}
+		}
+		if (faces.size()>0)
+		{
+			faces.erase(faces.begin());
+		}
+		if (distancesFromFace1.size() > 0)
+		{
+			distancesFromFace1.erase(distancesFromFace1.begin());
+		}
+		facesDetected.push_back(face);
+		faceIndex.push_back(&pDoc->plyLoader.faceArry[face]);
+	}
+
+
+	return;
+
 }

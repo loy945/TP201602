@@ -28,6 +28,9 @@ public:
 	bool getCoverRange(TextureElement * te, double radius);
 	void setN(TextureElement * te);
 	void markCoveredFace(TextureElement * te);
+	void detectCollapse();
+	void selectNearByFace(TextureElement * te, double radius, vector<gl_face *> &faceIndex);
+	void collapse(TextureElement * te1, TextureElement * te2);
 public:
 	SampleTexture * m_sampleTexture;
 	TargetTexture * m_targetTexture;

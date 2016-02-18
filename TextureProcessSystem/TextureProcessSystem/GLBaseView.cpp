@@ -639,8 +639,13 @@ BOOL CGLBaseView::PreTranslateMessage(MSG* pMsg)
 				   {
 					   isOpenDepthTest = true;
 				   }
+				  
 		}break;
-
+		case 33:
+		{
+				   m_pDoc->_ftep->detectCollapse();
+		}
+			break;
 		}
 
 
@@ -857,7 +862,6 @@ void CGLBaseView::DrawScene()
 				drawPLY();
 				glDisable(GL_POLYGON_OFFSET_LINE);
 			}
-
 		}
 		else
 		{
@@ -880,8 +884,8 @@ void CGLBaseView::DrawScene()
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			glPolygonOffset(-1.1f, -1.1f);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);;
-			drawPLYwithMultiTextureTEST();
-			drawPLYwithMultiTextureTEST2();
+// 			drawPLYwithMultiTextureTEST();
+// 			drawPLYwithMultiTextureTEST2();
 			glDisable(GL_POLYGON_OFFSET_FILL);
 
 

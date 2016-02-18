@@ -18,8 +18,19 @@ bool Texture::addTE(TextureElement * te)
 			return false;
 	}*/
 	tes.push_back(te);
-	return true;
-	
+	return true;	
+}
+bool Texture::deleteTE(TextureElement * te)
+{
+	for (int i = 0; i < tes.size(); i++)
+	{
+		if (tes[i]->index == te->index)
+		{
+			tes.erase(tes.begin()+i);
+			return true;
+		}		
+	}
+	return false;
 }
 bool Texture::isConnected(int index1,int index2)
 {
