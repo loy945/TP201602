@@ -332,6 +332,7 @@ bool Texture::getSLSE(TextureElement * te, int &start, int &end)
 			end = 0;
 			int i = 0;
 			int j = 0;
+			int tryTimes = 0;
 			int linkSize = te->link.size();
 			while (true)
 			{
@@ -352,6 +353,11 @@ bool Texture::getSLSE(TextureElement * te, int &start, int &end)
 					return true;
 				}
 				i = (i + 1) % linkSize;
+				tryTimes++;
+				if (tryTimes>(linkSize+1))
+				{
+					return false;
+				}
 			}
 		}
 	}

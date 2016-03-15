@@ -1,5 +1,6 @@
 #pragma once
 #include <math.h>
+#include "config.h"
 class Point3D
 {
 public:
@@ -58,7 +59,7 @@ public:
 
 	bool operator == (const Point3D & pt ) const
 	{
-		if((pow((this->x-pt.x),2)<0.01)&&(pow((this->y-pt.y),2)<0.01)&&(pow((this->z-pt.z),2)<0.01))
+		if ((abs(this->x - pt.x)<minFloat) && (abs(this->y - pt.y)<minFloat) && (abs(this->z - pt.z)<minFloat))
 		{
 			return true;
 		}

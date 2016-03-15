@@ -21,6 +21,8 @@ TextureElement::TextureElement(int index)
 	isShow = true;
 	linkSize = 0;
 	link.clear();
+	minRadius = 999;
+	maxRadius = 0;
 }
 /*
 TextureElement::TextureElement(int index, gl_face * face, int textureIndex, float position[3])
@@ -52,6 +54,8 @@ TextureElement::TextureElement(int index, gl_face * face, int textureIndex, Poin
 	isShow = true;
 	linkSize = 0;
 	link.clear();
+	minRadius = 999;
+	maxRadius = 0;
 }
 TextureElement::TextureElement(int index,gl_face * face,int textureIndex)
 {	
@@ -72,6 +76,8 @@ TextureElement::TextureElement(int index,gl_face * face,int textureIndex)
 	isShow = true;
 	linkSize = 0;
 	link.clear();
+	minRadius = 999;
+	maxRadius = 0;
 }
 
 
@@ -97,6 +103,8 @@ bool TextureElement::init(gl_face * face)
 	}
 	isfixed = false;
 	isShow = true;
+	minRadius = 999;
+	maxRadius = 0;
 }
 void TextureElement::addLinkNode(LinkData * node)
 {
@@ -107,7 +115,7 @@ void TextureElement::addLinkNode(LinkData * node)
 	}
 	link.push_back(node);
 	linkSize++;
-	
+	updateRadius();
 }
 void TextureElement::deleteNdoe(LinkData * node)
 {
@@ -119,8 +127,24 @@ void TextureElement::deleteNdoe(LinkData * node)
 			linkSize--;
 		}
 	}
+	updateRadius();
 }
+void TextureElement::updateRadius()
+{
+	for (int i = 0; i < link.size(); i++)
+	{
+		float dis = (*link.at(i)->linkElement->getPos() - *this->getPos()).getDistance();
+		if (dis<minRadius)
+		{
+			minRadius = dis;
+		}
+		if (dis > maxRadius)
+		{
+			maxRadius = dis;
+		}
+	}
 
+}
 double TextureElement::getDisFrom(float * position)
 {
 	float res[3];

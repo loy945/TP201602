@@ -25,10 +25,13 @@ public:
 	bool isfixed;
 	bool isShow;
 	int cid;
+	float minRadius;
+	float maxRadius;
 public:
 	bool init(gl_face * face);
 	void addLinkNode(LinkData * node);
 	void deleteNdoe(LinkData * node);
+	void updateRadius();
 	//重载==运算，index是唯一标示符
 	bool operator == (const int index)
 	{

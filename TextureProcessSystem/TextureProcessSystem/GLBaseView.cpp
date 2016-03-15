@@ -338,11 +338,11 @@ void CGLBaseView::drawPLY()
 		if (isFill)
 		{
 		
-// 		if (m_pDoc->dr->m_triangleFaceArry[i].isMark&&false)
-// 		{
-// 			glColor3f(1, 0, 0);
-// 		}
-		/*else
+		if (m_pDoc->dr->m_triangleFaceArry[i].isMark)
+		{
+			glColor3f(1, 0, 0);
+		}
+		else
 		{
 				float c = m_pDoc->dr->m_triangleFaceArry[i].disFromCenter/2.0;
 				if (c>0.8)
@@ -359,7 +359,7 @@ void CGLBaseView::drawPLY()
 				else{
 					glColor3f(c, 0, 0);
 				}
-		}*/
+		}
 		}
 		else
 		{

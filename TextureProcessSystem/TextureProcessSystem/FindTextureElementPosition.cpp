@@ -9,6 +9,7 @@
 #include "V_calculate.h"
 #include <fstream>
 #include "Line.h"
+#include "Triangle.h"
 using namespace std;
 #define pi 3.1415926
 using namespace cv;
@@ -225,29 +226,29 @@ void FindTextureElementPosition::draw()
 	glVertex3f(p3.x, p3.y, p3.z);
 	glEnd();
 
-// 	for (i = 0; i < m_targetTexture->tes.size(); i++)
-// 	{
-// 		if (!m_targetTexture->tes[i]->isShow)
-// 			continue;
-// 		//画基元法线
-// 		glColor3f(1, 1, 0);
-// 		glLineWidth(1.0);
-// 		glBegin(GL_LINES);
-// 		glVertex3fv(m_targetTexture->tes[i]->pos);
-// 		double x = m_targetTexture->tes[i]->pos[0] + m_targetTexture->tes[i]->n[0] ;
-// 		double y = m_targetTexture->tes[i]->pos[1] + m_targetTexture->tes[i]->n[1];
-// 		double z = m_targetTexture->tes[i]->pos[2] + m_targetTexture->tes[i]->n[2];
-// 		glVertex3f(x,y,z);
-// 		glEnd();
-// 	}
+	for (i = 0; i < m_targetTexture->tes.size(); i++)
+	{
+		if (!m_targetTexture->tes[i]->isShow)
+			continue;
+		//画基元法线
+		glColor3f(1, 1, 0);
+		glLineWidth(1.0);
+		glBegin(GL_LINES);
+		glVertex3fv(m_targetTexture->tes[i]->pos);
+		double x = m_targetTexture->tes[i]->pos[0] + m_targetTexture->tes[i]->n[0] ;
+		double y = m_targetTexture->tes[i]->pos[1] + m_targetTexture->tes[i]->n[1];
+		double z = m_targetTexture->tes[i]->pos[2] + m_targetTexture->tes[i]->n[2];
+		glVertex3f(x,y,z);
+		glEnd();
+	}
 	
 	glColor3f(0, 0, 1);
 	glBegin(GL_QUADS);
 
 	for (i = 0; i < m_targetTexture->tes.size(); i++)
 	{
-		if (!m_targetTexture->tes[i]->isShow)
-			continue;
+// 		if (!m_targetTexture->tes[i]->isShow)
+// 			continue;
 
 		if (m_targetTexture->tes[i]->index == targetCenter->index)
 		{
@@ -276,6 +277,10 @@ void FindTextureElementPosition::draw()
 				glColor3f(0, 0, 1);
 			}
 			
+		}
+		if (!m_targetTexture->tes[i]->isShow)
+		{
+			glColor3f(0.1, 0.1, 0.1);
 		}
 		x = m_targetTexture->tes[i]->pos[0];
 		y = m_targetTexture->tes[i]->pos[1];
@@ -717,7 +722,14 @@ bool FindTextureElementPosition::buildByStep()
 	{
 		return false;
 	}
-	
+	for (int i = 0; i < pDoc->dr->m_triangleFaceArry.size();i++)
+	{
+		pDoc->dr->m_triangleFaceArry.at(i).isMark = false;
+	}
+	for (int i = 0; i < this->m_targetTexture->tes.size();i++)
+	{
+		markCoveredFace(m_targetTexture->tes.at(i));
+	}
 	vector<int> matchF;
 	vector<vector<int> >  linkPairs;
 	//生成新基元
@@ -841,7 +853,7 @@ void FindTextureElementPosition::detectCross1(TextureElement * te)
 }
 void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 {
-	if (!te->isfixed)
+	if (!te->isfixed || !te->isShow)
 	{
 		return;
 	}
@@ -976,11 +988,23 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 						{
 							p = 0;
 						}
-						float posZero[3] = { 0, 0, 0 };
+						float posZero[3] = { 0, 0, 0 };	
 						if (CV_calculate::isCross(vert[i], vert[p], res2, posZero))
 						{
 							inArea = false;
 						}
+						if (!te->link[i]->linkElement->isLinkTo(te->link[p]->linkElement->index))
+						{
+							Triangle * tr1 = new Triangle();
+							tr1->pt[0].setValue(Point3D(vert[i]));
+							tr1->pt[1].setValue(Point3D(vert[p]));
+							tr1->pt[2].setValue(Point3D(posZero));
+							if (tr1->isAPointInTriangle(Point3D(res2)))
+							{
+								inArea = false;
+							}
+						}
+							
 					}
 					if (inArea)
 					{
@@ -1044,7 +1068,7 @@ void FindTextureElementPosition::detectCollapse()
 		{
 			continue;
 		}
-		for (int j = 0; j < m_targetTexture->tes.size(); j++)
+		for (int j = w; j < m_targetTexture->tes.size(); j++)
 		{
 			TextureElement * te2 = m_targetTexture->tes.at(j);	
 			if (!te2->isShow)
@@ -1052,14 +1076,18 @@ void FindTextureElementPosition::detectCollapse()
 				continue;
 			}
 			float odis = (*te1->getPos() - *te2->getPos()).getDistance();
-			if (odis <minCollapseDistance&&te1->index!=te2->index)
+			float minDistance1 = te1->minRadius;
+			float minDistance2 = te2->minRadius;
+			float minDistance = minDistance1 < minDistance2 ? minDistance1 : minDistance2;
+			if (odis <minCollapseDistance&&te1->index != te2->index)
 			{			
-				collapse(te1, te2);
+				collapse(te2, te1);
 				return;
 			}
 		}
 		
 	}
+	return;
 }
 
 void FindTextureElementPosition::selectNearByFace(TextureElement * te, double radius, vector<gl_face *> &faceIndex)
