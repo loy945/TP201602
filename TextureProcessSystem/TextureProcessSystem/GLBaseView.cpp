@@ -614,9 +614,10 @@ BOOL CGLBaseView::PreTranslateMessage(MSG* pMsg)
 				   DWORD TimeStart, TimeEnd, TimeUsed;
 				   DWORD m, s, ms;
 				   TimeStart = GetTickCount();
-				   for (int counti = 0; counti < 500; counti++)
+				   for (int counti = 0; counti < 50; counti++)
 				   {
 					   m_pDoc->_ftep->buildByStep();
+					   m_pDoc->_ftep->detectCollapse();
 				   }
 				   TimeEnd = GetTickCount();
 				   TimeUsed = TimeEnd - TimeStart;
