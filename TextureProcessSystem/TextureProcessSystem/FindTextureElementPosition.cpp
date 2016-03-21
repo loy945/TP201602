@@ -887,6 +887,7 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 	float vert[20][3];//每一个vert[i][0],vert[i][1],保存这个顶点投转后的x,y值
 	int vertNum = 0;
 	float range = 0;
+	float grange = 0;
 	for (int i = 0; i < te->link.size(); i++)
 	{	
 		TextureElement * tei = te->link[i]->linkElement;
@@ -910,8 +911,17 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 		{
 			range = dis;
 		}
+		float gdis = te->link[i]->distance;
+		if (gdis > grange)
+		{
+			grange = gdis;
+		}
+
 	}
-	
+	//--把所有测地线距离在范围内的点选出来
+	vector<gl_face*> nearbyFace;
+	selectNearByFace(te, grange, nearbyFace);
+	//
 	//从te->face开始，广度优先遍历
 	vector<int> processingIndex;//每次从中选取一个最近的面
 	vector<float> processingdistance;//对应processingIndex
@@ -941,12 +951,20 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 		//判断是否在范围中
 		if (minDistane<=range)
 		{
+
 			//将这个面的序号和距离加入已处理队列
 			processed.push_back(sIndex);
 			processedistance.push_back(minDistane);
 			//把他相邻的所有面加入待处理队列
 			TriangleFace * f = &m_pDR->m_triangleFaceArry[sIndex];
 			f->isMark = true;
+			//记录距离
+			if (f->nearestTE.first<minDistane)
+			{
+				f->nearestTE.first = minDistane;
+				f->nearestTE.second = sIndex;
+			}
+			
 			for (int j = 0; j < f->faceNearByNums;j++)
 			{
 				int index = f->faceNearByIndex[j];
@@ -967,8 +985,16 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 						isAddIn = true;
 					}
 				}
-				//
-				if (!isAddIn)
+				//是否在测地线范围内
+				bool inarea = false;
+				for (int i = 0; i < nearbyFace.size(); i++)
+				{
+					if (nearbyFace[i]->facenum == tf->facenum)
+					{
+						inarea = true;
+					}
+				}
+				if (!isAddIn&&inarea)
 				{
 					float facePos[4], res1[4], res2[4];
 					facePos[0] = tf->corex;
@@ -1003,8 +1029,7 @@ void FindTextureElementPosition::markCoveredFace(TextureElement * te)
 							{
 								inArea = false;
 							}
-						}
-							
+						}							
 					}
 					if (inArea)
 					{

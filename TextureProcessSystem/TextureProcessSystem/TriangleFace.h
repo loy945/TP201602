@@ -12,5 +12,6 @@ public:
 	TriangleFace * tempLinkPara;//指向来源，寻找路径的时候作参考
 	float cost;//从来源处到这一节点总长度
 	bool isMark;
+	pair<float, int> nearestTE;//到最近元素的测地线距离及elementIndex
 };
 
