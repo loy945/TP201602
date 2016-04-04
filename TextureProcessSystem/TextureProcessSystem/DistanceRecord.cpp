@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "DistanceRecord.h"
 #include <math.h>
+#include <fstream>
+using namespace std;
 DistanceRecord::DistanceRecord()
 {
 }
@@ -92,26 +94,53 @@ void DistanceRecord::init(Model_PLY * plyModel)
 		tempTF->corez = m_plyModel->faceArry[i].corez;
 		this->m_triangleFaceArry.push_back(*tempTF);
 	}
-
-	for (int i = 0; i < m_triangleFaceArry.size(); i++)
+	bool read=false;
+	read = readFromFile("DistanceRecord.log");
+	if (!read)
 	{
-		buildNeighbourTriangleIndex(m_triangleFaceArry[i].facenum);
+		for (int i = 0; i < m_triangleFaceArry.size(); i++)
+		{
+			buildNeighbourTriangleIndex(m_triangleFaceArry[i].facenum);
+		}
+		buildDistanceData();
+		outputToFile("DistanceRecord.log");
 	}
-	buildDistanceData();
-	/* test code for getDistance
-	float dis;
-	dis = getGeodesicDistanceBetweenTwoTriangles(1, 2677);
-	float dis2;
-	Point3D pt1, pt2;
-	pt1.x = m_triangleFaceArry[1].corex + 0;
-	pt1.y = m_triangleFaceArry[1].corey + 0;
-	pt1.z = m_triangleFaceArry[1].corez ;
-	
-	pt2.x = m_triangleFaceArry[2677].corex +0;
-	pt2.y = m_triangleFaceArry[2677].corey + 0;
-	pt2.z = m_triangleFaceArry[2677].corez;
-
-	dis2 = getGeodesicDistanceBetweenTwoTrianglesWithBEPoint(1, 2677,pt1,pt2);*/
+}
+bool DistanceRecord::outputToFile(const char * fileName)
+{
+	fstream f(fileName, ios::out|ios::ate);
+	for (int i = 0; i < m_plyModel->faceArry.size(); i++)
+	{
+		TriangleFace * face1 = &m_triangleFaceArry[i];
+		f << face1->faceNearByNums << " ";
+		for (int k = 0; k < face1->faceNearByNums; k++)
+		{
+			f << face1->faceNearByIndex[k] <<" "<< face1->faceNearByDistance[k] << endl;
+		}
+	}
+	f.close();
+	return true;
+}
+bool DistanceRecord::readFromFile(const char * fileName)
+{
+	fstream f(fileName);
+	for (int i = 0; i < m_plyModel->faceArry.size(); i++)
+	{
+		TriangleFace * face1 = &m_triangleFaceArry[i];
+		int num = 0;
+		f >> num;
+		if (f.eof())
+		{
+			return false;
+		}
+		face1->faceNearByNums =num;		
+		for (int k = 0; k < face1->faceNearByNums; k++)
+		{
+			f >>face1->faceNearByIndex[k] >> face1->faceNearByDistance[k];
+		}
+	}
+	f.close();
+	return true;
 }
 void DistanceRecord::buildDistanceData()
 {
