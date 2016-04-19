@@ -76,7 +76,28 @@ BOOL CTextureProcessSystemDoc::OnNewDocument()
 	return TRUE;
 }
 
-
+bool CTextureProcessSystemDoc::loadDataFromObj()
+{
+	for (int i = 0; i < objloader->F.size(); i++)
+	{
+		Mian * objFacei = &(objloader->F[i]);
+		gl_face * plyFacei = &(plyLoader.faceArry[i]);
+		for (int j = 0; j < 3; j++)
+		{
+			//obj 中面的第i个点的纹理坐标
+			int objTexIndex = objFacei->T[j];
+			double u = objloader->VT[objTexIndex].TU;
+			double v = objloader->VT[objTexIndex].TV;
+			//ply 中面的纹理坐标
+			plyFacei->texCoord.cor[j][0] = u;
+			plyFacei->texCoord.cor[j][1] = v;
+		}
+		plyFacei->texCoord.textureIndex = 1;
+		plyFacei->texCoord.update = false;
+	}
+	
+	return true;
+}
 BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模型文件 2014.8.11
 {
 	if (lpszPathName != NULL)
@@ -134,8 +155,12 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 			//生成临接信息
  				dr = new DistanceRecord();
  				dr->init(&plyLoader);
-
-			return TRUE;
+			//读入OBJ文件
+				objloader = new ObjLoader();
+				objloader->load("bunny_floater_square_opennl_parameterized.obj");
+			//将obj中的UV信息传递给plyLoader
+				//loadDataFromObj();
+				return TRUE;
 		}
 	}
 	return FALSE;
@@ -1044,7 +1069,7 @@ vector<int>  CTextureProcessSystemDoc::findFaceByTwoPointNewWay(int point1,int p
 	return resVector;
 
 }
-void CTextureProcessSystemDoc::crosspoint1(float * a,float *b,float *c)
+/*void CTextureProcessSystemDoc::crosspoint1(float * a,float *b,float *c)
 {
 	c[0]=(b[1]-a[1])/(a[0]-b[0]);
 	c[1]=a[0]*c[0]+a[1];
@@ -1133,7 +1158,7 @@ void CTextureProcessSystemDoc::count_TexcoordByHuang(int a, int b, int c, int d,
 	/*if (A > 9999 || A <-9999 || B > 9999 || B <-9999)
 	{
 		return;
-	}*/
+	}
 
 	
 	float o2x = (-d_h*λ / 2)*cos(d_xita) - (-d_h*λ / 2)*sin(d_xita) + d_pcorex;
@@ -1151,11 +1176,11 @@ void CTextureProcessSystemDoc::count_TexcoordByHuang(int a, int b, int c, int d,
 
 	//至此纹理已经算出来了
 	/*if(!Triangle->at(a).textureclick)
-	{*/
+	{
 		//Triangle->at(a).textureclick=true;
 		count++;
-	/*	Triangle->at(a).renderTime=times;
-	}*/
+		Triangle->at(a).renderTime=times;
+	}
 	
 
 }
@@ -1230,7 +1255,7 @@ void CTextureProcessSystemDoc::alterFace2dCoord(int a,int d,int b,int c1,int c2,
 
 
 
-	/**********以上是面片顶点数据载入************/
+	/**********以上是面片顶点数据载入***********
 
 	double kAB;
 	double kDE,kDF,kEF;//斜率k
@@ -1333,7 +1358,7 @@ void CTextureProcessSystemDoc::alterFace2dCoord(int a,int d,int b,int c1,int c2,
 	a_pt2d[c1].y=d_pt2d[e1].y;
 
 	a_pt2d[c2].x=d_pt2d[e2].x;
-	a_pt2d[c2].y=d_pt2d[e2].y;*/
+	a_pt2d[c2].y=d_pt2d[e2].y;
 }
 
 void CTextureProcessSystemDoc::findDiffrentPoint(int a,int d,int &b,int &c1,int &c2,int e1,int e2)
@@ -1358,7 +1383,7 @@ void CTextureProcessSystemDoc::findDiffrentPoint(int a,int d,int &b,int &c1,int 
 		return;
 	}
 
-	*/
+	
 	for(int i=0;i<3;i++)
 	{
 		int k=Triangle->at(a).ptnum[i];
@@ -1422,7 +1447,7 @@ int  CTextureProcessSystemDoc::count_Texcoord(int d,int e1,int e2)
 			cout<<"2677->"<<a<<endl;
 		}*/
 		/*if(!Triangle->at(a).textureclick)
-		{*/
+		{
 			count++;
 			findDiffrentPoint(a,d,b,c1,c2,e1,e2);//输入a d e1 e2得到 b  c1 c2 
 			count_TexcoordByHuang(a,b,c1,d,e1);//计算纹理
@@ -1442,7 +1467,7 @@ int CTextureProcessSystemDoc::count_3FaceTexcoord(int d)
 	//做计算的三角形面片必须已经纹理
 	vector<gl_face> * Triangle=&(plyLoader.faceArry);
 	/*if(!Triangle->at(d).textureclick)
-		return 0;*/
+		return 0;
 	//传进来三角形面片的信息，计算出3个邻接三角形的纹理坐标
 	bool res1=false,res2=false,res3=false;
 	k=count_Texcoord(d,0,1)+count_Texcoord(d,1,2)+count_Texcoord(d,2,0);
@@ -1465,7 +1490,7 @@ void CTextureProcessSystemDoc::count_h(int i)
 		return;
 	if(Triangle->at(i).textureclick)
 		return;
-*/
+
 
 	if((Triangle->at(i).value==0)&&(Vertex2d->at(Triangle->at(i).ptnum_2d[0]).x==Vertex2d->at(Triangle->at(i).ptnum_2d[1]).x))
 	{
@@ -1639,7 +1664,7 @@ void CTextureProcessSystemDoc::count_h(int i)
 
 
 	/*if (!Triangle->at(i).textureclick||true)
-	{*/
+	{
 		//Triangle->at(i).h = h;
 		Triangle->at(i).h = 0.01;
 		//Triangle->at(i).textureclick = true;
@@ -1765,7 +1790,7 @@ void CTextureProcessSystemDoc::reset2dCoord()
 				Triangle->at(i).texCoord.cor[j][0] = -1;
 				Triangle->at(i).texCoord.cor[j][1] = -1;
 			}
-		}*/
+		}
 	}
 }
 void CTextureProcessSystemDoc::resetOuterTriangleTex()
@@ -1782,9 +1807,9 @@ void CTextureProcessSystemDoc::resetOuterTriangleTex()
 			Vertex2d->at(Triangle->at(i).ptnum_2d[j]).x=Triangle->at(i)._2dx[j];
 			Vertex2d->at(Triangle->at(i).ptnum_2d[j]).y=Triangle->at(i)._2dy[j];
 		}
-	/*	Triangle->at(i).isProcessedTexCor=false;*/
+	/*	Triangle->at(i).isProcessedTexCor=false;
 		/*if(Triangle->at(i).isProcessedTexCor||Triangle->at(i).textureclick)
-		{*/
+		{
 			count=0;
 			for(int j=0;j<3;j++)
 			{
@@ -1812,7 +1837,7 @@ void CTextureProcessSystemDoc::resetOuterTriangleTex()
 		/*else
 		{
 			Triangle->at(i).textureclick=false;
-		}*/
+		}
 		Triangle->at(i).isProcessedTexCor=false;
 		
 	}
@@ -1877,7 +1902,7 @@ void CTextureProcessSystemDoc::calTexCor(){
 		deleteIndexfromProcesseTriangleIndex(index);
 		pocessedTriangleIndex.push_back(index);
 	}
-}
+}*/
 int CTextureProcessSystemDoc::findFaceIndex(int d,int e1,int e2)
 {
 	vector<gl_face> * Triangle=&(plyLoader.faceArry);
@@ -1886,7 +1911,7 @@ int CTextureProcessSystemDoc::findFaceIndex(int d,int e1,int e2)
 	if(res.size()>0)
 		return res.at(0);
 }
-bool CTextureProcessSystemDoc::addIndextoProcesseTriangleIndex(int pareIndex,int index)
+/*bool CTextureProcessSystemDoc::addIndextoProcesseTriangleIndex(int pareIndex,int index)
 {
 
 	//如果已经处理过了 则不再处理
@@ -1917,8 +1942,8 @@ bool CTextureProcessSystemDoc::addIndextoProcesseTriangleIndex(int pareIndex,int
 		return false;
 	toProcesseTriangleIndex.push_back(index);
 	return true;
-}
-void CTextureProcessSystemDoc::deleteIndexfromProcesseTriangleIndex(int index)
+}*/
+/*void CTextureProcessSystemDoc::deleteIndexfromProcesseTriangleIndex(int index)
 {
 	for(int i=0;i<toProcesseTriangleIndex.size();i++)
 	{
@@ -1928,8 +1953,8 @@ void CTextureProcessSystemDoc::deleteIndexfromProcesseTriangleIndex(int index)
 		}
 	}
 	
-}
-void CTextureProcessSystemDoc::calTexCorByIndex(int processedindex,int steps)
+}*/
+/*void CTextureProcessSystemDoc::calTexCorByIndex(int processedindex,int steps)
 {
 	times++;
 	toProcesseTriangleIndex.clear();
@@ -1945,7 +1970,7 @@ void CTextureProcessSystemDoc::calTexCorByIndex(int processedindex,int steps)
 	}
 		//把超过纹理范围的三角形的纹理开关关掉不显示
 	//resetOuterTriangleTex();
-}
+}*/
 vector<gl_face *> CTextureProcessSystemDoc::markConnectedFace(double centerLimitCos,double limitCos,int steps)
 {
 	_centerLimitCos=centerLimitCos;
@@ -2028,7 +2053,7 @@ double CTextureProcessSystemDoc::getNorError(float * n1,float * n2)
 	double cos=n1_n2/(sqrtf(n1_len)*sqrtf(n2_len));
 	return cos;
 }
-bool CTextureProcessSystemDoc::ispocessed(int index)
+/*bool CTextureProcessSystemDoc::ispocessed(int index)
 {
 	/*for (int i = 0; i < pocessedTriangleIndex.size(); i++)
 	{
@@ -2036,10 +2061,10 @@ bool CTextureProcessSystemDoc::ispocessed(int index)
 		{
 			return true;
 		}
-	}*/
+	}
 	return false;
-}
-void CTextureProcessSystemDoc::calVertex2D(float pos[3], int index)
+}*/
+/*void CTextureProcessSystemDoc::calVertex2D(float pos[3], int index)
 {
 	//计算第index个targetTextureELement的偏移量
 	//目标中心基元的位置
@@ -2082,7 +2107,7 @@ void CTextureProcessSystemDoc::calVertex2D(float pos[3], int index)
 	}
 	
 
-}
+}*/
 void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int maxNum, float radius, int textureIndex)
 {
 	vector<int> v; 

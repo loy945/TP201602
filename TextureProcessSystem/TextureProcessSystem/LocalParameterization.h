@@ -19,6 +19,7 @@ public:
 	void init(Model_PLY * ply, vector<int> faceIndexs);
 	double localPara(Model_PLY * ply, vector<int> faceIndexs, int indexCenter, Point3D * offset, float scale);
 	void face_Parameterization(Model_PLY * ply, vector<int> faceIndexs);
+	void face_ParameterizationUsingCGAL(Model_PLY * ply, vector<int> faceIndexs);
 	int find1by2(int index2, vector<VertexPair*> *v);
 	int find2by1(int index1, vector<VertexPair*> *v);
 	void updateTextureCoord(int textureIndex);//更新纹理信息

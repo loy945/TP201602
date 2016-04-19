@@ -7,6 +7,7 @@
 #include "plyloader.h"
 #include "stdafx.h"
 #include "DistanceRecord.h"
+#include "ObjLoader.h"
 class FindTextureElementPosition;
 
 class CTextureProcessSystemDoc : public CDocument
@@ -43,31 +44,31 @@ public:
 	void error(int i);//因为发现误差过大，所以本函数为修正误差函数，输入需要修正误差的三角面片编号i
 	void node(float * fac1,float *fac2,float *fac3,float *point);//输入三个平面，得到三个平面的交点
 	float rbf(float d,float e,int *size,float *c,float *coefficient,char rbffuntion);//RBF插值函数
-	void crosspoint1(float * a,float *b,float *c);
-	void crosspoint2(float a,float *b,float *c);
-	void count_h(int i);//计算第i个三角形的h
+	//void crosspoint1(float * a,float *b,float *c);
+	//void crosspoint2(float a,float *b,float *c);
+//	void count_h(int i);//计算第i个三角形的h
 
 	//12.17新加入算法
-	void count_TexcoordByHuang(int a,int b,int c,int d,int e);
-	void findDiffrentPoint(int a,int d,int &b,int &c1,int &c2,int e1,int e2);
-	int count_Texcoord(int d,int c1,int c2);
-	int  count_3FaceTexcoord(int d);
+//	void count_TexcoordByHuang(int a,int b,int c,int d,int e);
+//	void findDiffrentPoint(int a,int d,int &b,int &c1,int &c2,int e1,int e2);
+//	int count_Texcoord(int d,int c1,int c2);
+//	int  count_3FaceTexcoord(int d);
 	//12.18新加入 让映射到2d的2个三角形的边拼接起来
-	void alterFace2dCoord(int a,int d,int b,int c1,int c2,int e1,int e2);
+//	void alterFace2dCoord(int a,int d,int b,int c1,int c2,int e1,int e2);
 	//12.27
-	void resetOuterTriangleTex();//把纹理坐标在0-1之外的三角形面重置
+//	void resetOuterTriangleTex();//把纹理坐标在0-1之外的三角形面重置
 	//2015.4.6
-	void calTexCor();
+	//void calTexCor();
 	int findFaceIndex(int d,int e1,int e2);
 	vector<int> toProcesseTriangleIndex;	//保存需要处理的三角形序号
 	//2015.5.14
-	vector<int> pocessedTriangleIndex; //保存已处理的三角形序号
-	bool ispocessed(int index);
+	//vector<int> pocessedTriangleIndex; //保存已处理的三角形序号
+	//bool ispocessed(int index);
 	//
 	int calTexCorTimes;//绘制纹理遍历次数
-	bool addIndextoProcesseTriangleIndex(int pareIndex,int index);
-	void deleteIndexfromProcesseTriangleIndex(int index);
-	void calTexCorByIndex(int processedindex,int steps);
+	//bool addIndextoProcesseTriangleIndex(int pareIndex,int index);
+	//void deleteIndexfromProcesseTriangleIndex(int index);
+	//void calTexCorByIndex(int processedindex,int steps);
 	//2015.4.15
 	float r,g,b;
 	int count;
@@ -98,6 +99,10 @@ public:
 	DistanceRecord * dr;//测地线距离数据
 	bool isdrawbg;//背景填充颜色
 	bool istestV;
+	//2016.4.19
+	ObjLoader * objloader;
+	bool loadDataFromObj();
+	//
 // 重写
 public:
 	virtual BOOL OnNewDocument();

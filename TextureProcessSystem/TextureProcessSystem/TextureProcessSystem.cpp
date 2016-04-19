@@ -338,6 +338,12 @@ void CTextureProcessSystemApp::MappingToFace()
 	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
 	pDoc->istestV = false;
 	//²âÊÔÓÃÀı
+	for (int i = 0; i < pDoc->plyLoader.faceArry.size();i++)
+	{
+		pDoc->plyLoader.faceArry[i].updateTexCoord();
+	}
+
+
 	int faceNum = pDoc->userSelectingTriangleIndex;
 	gl_face * faceSelect = &pDoc->plyLoader.faceArry.at(faceNum);
 	Point3D pt[10];

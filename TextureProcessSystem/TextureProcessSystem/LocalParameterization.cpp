@@ -152,6 +152,10 @@ void LocalParameterization::face_Parameterization(Model_PLY * ply, vector<int> f
 	mymesh->param(this->find2by1(m_indexCenter, vfp), m_scale, m_2DOffset);
 	mymesh->writemesh("after-convert.ply2");
 }
+void LocalParameterization::face_ParameterizationUsingCGAL(Model_PLY * ply, vector<int> faceIndexs)
+{
+
+}
 int LocalParameterization::find1by2(int index2,vector<VertexPair*> *v)
 {
 	for (int i = 0; i < v->size(); i++)
