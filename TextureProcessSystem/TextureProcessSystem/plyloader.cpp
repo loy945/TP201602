@@ -194,7 +194,7 @@ bool Model_PLY::Load(string filename)
 					//sscanf(buffer,"%i%i%i\n", vertex1,vertex2,vertex3 );
 					buffer[0] = ' ';
 
-					sscanf(buffer, "%i%i%i", &face.ptnum[0], &face.ptnum[2], &face.ptnum[1]);
+					sscanf(buffer, "%i%i%i", &face.ptnum[0], &face.ptnum[1], &face.ptnum[2]);
 					face.isSetValue=false;
 					face.value=0;
 

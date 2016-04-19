@@ -85,6 +85,10 @@ bool CTextureProcessSystemDoc::loadDataFromObj()
 		for (int j = 0; j < 3; j++)
 		{
 			//obj 中面的第i个点的纹理坐标
+			int objPointIndex = objFacei->V[j];
+			plyLoader.pointArry[plyFacei->ptnum[j]].x = objloader->V[objPointIndex].X;
+			plyLoader.pointArry[plyFacei->ptnum[j]].y = objloader->V[objPointIndex].Y;
+			plyLoader.pointArry[plyFacei->ptnum[j]].z = objloader->V[objPointIndex].Z;
 			int objTexIndex = objFacei->T[j];
 			double u = objloader->VT[objTexIndex].TU;
 			double v = objloader->VT[objTexIndex].TV;
@@ -159,7 +163,7 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 				objloader = new ObjLoader();
 				objloader->load("bunny_floater_square_opennl_parameterized.obj");
 			//将obj中的UV信息传递给plyLoader
-				//loadDataFromObj();
+				loadDataFromObj();
 				return TRUE;
 		}
 	}

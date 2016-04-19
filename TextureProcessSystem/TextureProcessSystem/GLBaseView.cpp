@@ -335,20 +335,20 @@ void CGLBaseView::drawPLY()
 	glBegin(GL_TRIANGLES);//显示模型的面
 	for (int i = 0; i < m_pDoc->plyLoader.faceArry.size(); i++)
 	{
-		if (isFill)
-		{
-		
-		if (m_pDoc->dr->m_triangleFaceArry[i].isMark)
-		{
-			glColor3f(1, 0, 0);
-		}
-		else
-		{
-				float c = m_pDoc->dr->m_triangleFaceArry[i].disFromCenter/2.0;
-				if (c>0.8)
+		/*if (isFill)
+		{		
+			if (m_pDoc->dr->m_triangleFaceArry[i].isMark)
+			{
+				glColor3f(1, 0, 0);
+			}
+			else
+			{
+				float c = m_pDoc->dr->m_triangleFaceArry[i].disFromCenter / 2.0;
+				if (c > 0.8)
 				{
 					glColor3f(0, 0, 0);
-				}else if (c>0.5)
+				}
+				else if (c > 0.5)
 				{
 					glColor3f(0, 0, c);
 				}
@@ -359,18 +359,19 @@ void CGLBaseView::drawPLY()
 				else{
 					glColor3f(c, 0, 0);
 				}
-		}
+			}
 		}
 		else
 		{
 			if (Triangle->at(i).testV)
 			{
 				glColor3f(1, 0, 0);
-			}else
+			}
+			else
 			{
 				glColor3f(0.3, 0.3, 0.3);
 			}
-		}
+		}*/
 		float v1x = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
 		float v1y = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
 		float v1z = m_pDoc->plyLoader.pointArry[Triangle->at(i).ptnum[0]].z;
@@ -399,6 +400,39 @@ void CGLBaseView::drawPLY()
 		}
 	}
 	glEnd();
+	//glDisable(GL_TEXTURE_2D);
+
+	/*for (int i = 0; i < m_pDoc->objloader->F.size(); i++)
+	{
+		float v1x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].X;
+		float v1y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].Y;
+		float v1z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].Z;
+
+		float v2x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].X;
+		float v2y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].Y;
+		float v2z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].Z;
+
+		float v3x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].X;
+		float v3y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].Y;
+		float v3z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].Z;
+
+
+		if (Triangle->at(i).texCoords.size() == 0)
+		{
+			if (v1x < -4e+8)
+				break;
+			glNormal3fv(Triangle->at(i).n);
+			glVertex3f(v1x, v1y, v1z);
+			//glTexCoord2f(0, 0);
+			glVertex3f(v2x, v2y, v2z);
+			//glTexCoord2f(0,1);
+			glVertex3f(v3x, v3y, v3z);
+
+
+			//	glTexCoord2f(1,1);
+		}
+	}
+	glEnd();*/
 	//glDisable(GL_TEXTURE_2D);
 }
 
@@ -732,6 +766,7 @@ void CGLBaseView::makeCheckImage(void)
 void CGLBaseView::LoadGLTextures()
 {
 	/// 文件名 
+	m_texture[1].Load("background2.bmp");
 	string fileNamepro = "texels3/te (";
 	string fileNameres = ").bmp";
 	string fileName;
