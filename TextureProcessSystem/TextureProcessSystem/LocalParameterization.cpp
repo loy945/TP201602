@@ -37,7 +37,7 @@ double LocalParameterization::localPara(Model_PLY * ply, vector<int> faceIndexs,
 	
 	//ฒฮสýปฏ
 	this->face_Parameterization(ply, faceIndexs);
-
+	this->face_ParameterizationUsingCGAL(ply, faceIndexs);
  	return mymesh->getCurrentE();
 }
 
@@ -122,7 +122,7 @@ void LocalParameterization::init(Model_PLY * ply, vector<int> faceIndexs)
 		mymesh->IDtool->AppendVFSort(i, mymesh->FHead[mymesh->Face[i][1]], mymesh->FTail[mymesh->Face[i][1]]);
 		mymesh->IDtool->AppendVFSort(i, mymesh->FHead[mymesh->Face[i][2]], mymesh->FTail[mymesh->Face[i][2]]);
 	}
-
+	writeMeshInOff("pro-convert_off.off");
 	FILE *out = fopen("pro-convert.ply2", "w");
 	fprintf(out, "%d\n", mymesh->numberV);
 	fprintf(out, "%d\n", mymesh->numberF);
@@ -154,7 +154,7 @@ void LocalParameterization::face_Parameterization(Model_PLY * ply, vector<int> f
 }
 void LocalParameterization::face_ParameterizationUsingCGAL(Model_PLY * ply, vector<int> faceIndexs)
 {
-
+	//
 }
 int LocalParameterization::find1by2(int index2,vector<VertexPair*> *v)
 {
@@ -196,4 +196,21 @@ void LocalParameterization::updateTextureCoord(int textureIndex)
 
 	}
 	file.close();
+}
+
+bool LocalParameterization::writeMeshInOff(const char * fileName)
+{
+	int i = 0;
+	FILE *out = fopen(fileName, "w");
+	fprintf(out, "OFF\n");
+	fprintf(out, "%d ", mymesh->numberV);
+	fprintf(out, "%d ", mymesh->numberF);
+	fprintf(out, "%d\n", 0);
+	for (i = 0; i < mymesh->numberV; i++){
+		fprintf(out, "%lf %lf %lf\n", mymesh->point[i]->x, mymesh->point[i]->y, mymesh->point[i]->z);
+	}
+	for (i = 0; i < mymesh->numberF; i++)
+		fprintf(out, "3 %d %d %d\n", mymesh->Face[i][0], mymesh->Face[i][1], mymesh->Face[i][2]);
+	fclose(out);
+	return true;
 }

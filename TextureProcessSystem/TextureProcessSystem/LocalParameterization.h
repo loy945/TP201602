@@ -23,6 +23,8 @@ public:
 	int find1by2(int index2, vector<VertexPair*> *v);
 	int find2by1(int index1, vector<VertexPair*> *v);
 	void updateTextureCoord(int textureIndex);//更新纹理信息
+	//将m_ply网格输出成off格式
+	bool writeMeshInOff(const char * fileName);
 public:
 	Model_PLY * m_ply;
 	int m_indexCenter;

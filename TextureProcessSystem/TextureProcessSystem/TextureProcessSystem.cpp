@@ -275,7 +275,11 @@ void CTextureProcessSystemApp::Check()
 	CFrameWnd* pMain=(CFrameWnd*)CWinThread::m_pMainWnd;
 	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
 	pDoc->istestV = true;
-	
+	for (int i = 0; i < pDoc->plyLoader.faceArry.size(); i++)
+	{
+		pDoc->plyLoader.faceArry[i].updateTexCoord();
+	}
+
 
 	//pDoc->selectfaceLsit.clear();
 

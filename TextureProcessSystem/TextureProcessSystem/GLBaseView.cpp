@@ -401,39 +401,6 @@ void CGLBaseView::drawPLY()
 	}
 	glEnd();
 	//glDisable(GL_TEXTURE_2D);
-
-	/*for (int i = 0; i < m_pDoc->objloader->F.size(); i++)
-	{
-		float v1x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].X;
-		float v1y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].Y;
-		float v1z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[0]].Z;
-
-		float v2x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].X;
-		float v2y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].Y;
-		float v2z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[1]].Z;
-
-		float v3x = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].X;
-		float v3y = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].Y;
-		float v3z = m_pDoc->objloader->V[m_pDoc->objloader->F[i].V[2]].Z;
-
-
-		if (Triangle->at(i).texCoords.size() == 0)
-		{
-			if (v1x < -4e+8)
-				break;
-			glNormal3fv(Triangle->at(i).n);
-			glVertex3f(v1x, v1y, v1z);
-			//glTexCoord2f(0, 0);
-			glVertex3f(v2x, v2y, v2z);
-			//glTexCoord2f(0,1);
-			glVertex3f(v3x, v3y, v3z);
-
-
-			//	glTexCoord2f(1,1);
-		}
-	}
-	glEnd();*/
-	//glDisable(GL_TEXTURE_2D);
 }
 
 void CGLBaseView::OnDestroy()
@@ -766,7 +733,7 @@ void CGLBaseView::makeCheckImage(void)
 void CGLBaseView::LoadGLTextures()
 {
 	/// ÎÄ¼þÃû 
-	m_texture[1].Load("background2.bmp");
+	m_texture[1].Load("background.bmp");
 	string fileNamepro = "texels3/te (";
 	string fileNameres = ").bmp";
 	string fileName;
